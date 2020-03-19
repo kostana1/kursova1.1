@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class PersonInfo {
 
@@ -27,15 +28,8 @@ public class PersonInfo {
             return false;
         }
         allPersons.add(person);
+        System.out.println("Person created");
         return true;
-    }
-
-    public Person searchPerson(String fullName) {
-        int position = findPerson(fullName);
-        if(position > 0) {
-            return this.allPersons.get(position);
-        }
-        return null;
     }
 
     public boolean removePerson(Person person) {
@@ -52,8 +46,8 @@ public class PersonInfo {
         System.out.println("Persons' list");
         for(int i=0; i < this.allPersons.size(); i++) {
             System.out.println((i+1) + ". Personal Number = " + this.allPersons.get(i).getId() + " *** full name = " + this.allPersons.get(i).getFullName() +
-                    " *** gender = " + this.allPersons.get(i).getGender() + " *** dateOfBirth = " + this.allPersons.get(i).getDateOfBirth() + " *** interests = " +
-                    this.allPersons.get(i).getInterests() + " *** status = " + this.allPersons.get(i).getStatus());
+                    " *** gender = " + this.allPersons.get(i).getGender() + " *** dateOfBirth " + this.allPersons.get(i).getDateOfBirth() + ", " + this.allPersons.get(i).getInterests() +
+                    ", " + this.allPersons.get(i).getStatus());
         }
     }
 
