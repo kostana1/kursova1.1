@@ -8,8 +8,6 @@ import java.util.UUID;
 
 public class PersonService implements IService{
 
-//    public static final String SHOW_PERSONS =
-
     private List<Person> allPersons;
 
     public PersonService() {
@@ -17,7 +15,7 @@ public class PersonService implements IService{
     }
 
     @Override
-    public Person findPerson(UUID uuid) {
+    public Person findPersonByUuid(UUID uuid) {
         for(int i=0; i<this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
             if(existedPerson.getUuid() == uuid) {
@@ -28,8 +26,19 @@ public class PersonService implements IService{
     }
 
     @Override
+    public Person findPersonByName(String name) {
+        for(int i=0; i<this.allPersons.size(); i++) {
+            Person existedPerson = this.allPersons.get(i);
+            if (existedPerson.getName().equals(name)) {
+                return existedPerson;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public boolean addNewPerson(Person person) {
-        if(findPerson(person.getUuid()) != null) {
+        if(findPersonByUuid(person.getUuid()) != null) {
             System.out.println("Person already exist");
             return false;
         }
@@ -39,8 +48,8 @@ public class PersonService implements IService{
     }
 
     @Override
-    public boolean removeNewPerson(Person person) {
-        if(findPerson(person.getUuid()) != null) {
+    public boolean removePerson(Person person) {
+        if(findPersonByUuid(person.getUuid()) != null) {
             System.out.println(person.getName() + " was not found");
             return false;
         }
@@ -49,5 +58,11 @@ public class PersonService implements IService{
         return true;
     }
 
-
+    @Override
+    public void showPersons() {
+        System.out.println("Person list");
+        for(Person person : allPersons) {
+            System.out.println(person.toString());
+        }
+    }
 }

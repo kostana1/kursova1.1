@@ -1,17 +1,21 @@
 package com.company;
 
-import com.enumex.Egender;
-import com.enumex.Estatus;
+import com.enumex.EGender;
+import com.enumex.EStatus;
 import com.person.Person;
 import com.service.PersonService;
 
+import java.io.BufferedInputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.UUID;
 
 public class Main {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(new BufferedInputStream(System.in));
     private static PersonService personService = new PersonService();
 
     public static void main(String[] args) {
@@ -31,7 +35,7 @@ public class Main {
                     break;
 
                 case 1:
-                    showPersons();
+                    personService.showPersons();
                     break;
 
                 case 2:
@@ -69,59 +73,103 @@ public class Main {
     }
 
     private static void createPerson() {
+
+        EGender gender = null;
+        EStatus status = null;
+        Date dateOfBirth = null;
+
         System.out.println("Enter your name");
         String name = scanner.nextLine();
-        System.out.println("Enter your gender. ***0 for male <-> 1 for female***");
-        int gender = Integer.parseInt(scanner.nextLine());
+        int genderInput = Integer.parseInt(scanner.nextLine());
         try {
-            if(gender == 0) {
-                Egender male = Egender.MALE;
-                System.out.println(male);
-            }else if(gender == 1) {
-                Egender female = Egender.FEMALE;
-                System.out.println(female);
-            }
-        }catch (InputMismatchException e) {
+            gender = EGender.values()[genderInput];
+        } catch (InputMismatchException e) {
+            e.printStackTrace();
             scanner.nextLine();
             System.out.println("Please enter a valid number.***0 for male <-> 1 for female***");
         }
         System.out.println("Enter your date of birth");
-        //to do later
+        String dateOfBirthInput = scanner.nextLine();
+        String dateOfBirthPattern = "dd/MM/yyyy";
+        SimpleDateFormat formatDateOfBirth = new SimpleDateFormat(dateOfBirthPattern);
+        try {
+            dateOfBirth = formatDateOfBirth.parse(dateOfBirthInput);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("Enter your interests *** max symbols = 250 ***");
         char limit = 250;
         String interests = scanner.nextLine();
-        if(interests.length() > limit) {
+        if (interests.length() > limit) {
             interests = interests.substring(0, limit);
         }
         System.out.println("Enter your status *** 0 for single <-> 1 for in relationship <-> 2 for married");
-        int status = Integer.parseInt(scanner.nextLine());
+        int statusInput = Integer.parseInt(scanner.nextLine());
         try {
-            if(status == 0) {
-                Estatus single = Estatus.SINGLE;
-                System.out.println(single);
-            }else if(status == 1) {
-                Estatus inRelationship = Estatus.IN_RELATIONSHIP;
-                System.out.println(inRelationship);
-            }else if(status == 2) {
-                Estatus married = Estatus.MARRIED;
-                System.out.println(married);
-            }
-        }catch (InputMismatchException e) {
+            status = EStatus.values()[statusInput];
+        } catch (InputMismatchException e) {
             scanner.nextLine();
             System.out.println("Please enter a valid status number *** 0 for single <-> 1 for in relationship <-> 2 for married");
-            Person newPerson = new Person(name,gender,dateOfBirth,interests,status);
-            if(personService.addNewPerson(newPerson)) {
-                System.out.println("New person added");
-            }else {
-                System.out.println("Cannot add person");
-            }
+        }
+        Person newPerson = new Person(name, gender, dateOfBirth, interests, status);
+        if (personService.addNewPerson(newPerson)) {
+            System.out.println("New person added");
+            System.out.println(newPerson.toString());
+        } else {
+            System.out.println("Cannot add person");
         }
     }
 
     private static void removePerson() {
         System.out.println("Enter existing personal number uuid");
         String uuid = scanner.next();
-        UUID uuidInput =
-        Person existingPerson = personService.findPerson(uuid);
+        UUID uuidInput = UUID.fromString(uuid);
+        Person existingPerson = personService.findPersonByUuid(uuidInput);
+
+        if (personService.removePerson(existingPerson)) {
+            System.out.println("Successfully deleted");
+        } else {
+            System.out.println("Error deleting contact");
+        }
     }
+
+    private static void searchContact() {
+        System.out.println("Enter existing name");
+        String name = scanner.nextLine();
+        Person existingPerson = personService.findPersonByName(name);
+        System.out.println(existingPerson.toString());
+    }
+
+    public static void questions() {
+
+        int pickNumber = 0;
+        int answer = 0;
+
+        System.out.println("Pick a number from 1 to 10 as 1 does mean not interested in this survey and 10 does mean very interested");
+        while (true) {
+
+            try {
+                pickNumber = scanner.nextInt();
+                System.out.println("Answer the question: How often do you drink?");
+                try {
+                    System.out.println("1 - I don't drink; 2 - Not very often; 3 - Every other day; 4 - Every day");
+                    answer = scanner.nextInt();
+                } catch (InputMismatchException e) {
+//                    e.printStackTrace();
+                    scanner.nextLine();
+                    System.out.println("Please pick a number from 1 to 4");
+                }
+
+            } catch (InputMismatchException e) {
+                scanner.nextLine();
+                System.out.println("Please pick a number from 1 to 10");
+//                e.printStackTrace();
+            }
+        }
+//        int result = pickNumber * answer;
+//        System.out.println(result);
+
+    }
+
 }

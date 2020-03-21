@@ -6,7 +6,9 @@ import java.util.UUID;
 
 public interface IService {
 
-    Person findPerson(UUID uuid);
+    Person findPersonByUuid(UUID uuid);
+    Person findPersonByName(String name);
     boolean addNewPerson(Person person);
-    boolean removeNewPerson(Person person);
+    boolean removePerson(Person person);
+    void showPersons();
 }

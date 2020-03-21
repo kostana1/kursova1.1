@@ -1,8 +1,18 @@
 package com.enumex;
 
-public enum Estatus {
+public enum EStatus {
 
-    SINGLE,
-    IN_RELATIONSHIP,
-    MARRIED;
+    SINGLE(0),
+    IN_RELATIONSHIP(1),
+    MARRIED(2);
+
+    private final int statusValue;
+
+    EStatus(int statusValue) {
+        this.statusValue = statusValue;
+    }
+
+    public int getStatusValue() {
+        return statusValue;
+    }
 }
