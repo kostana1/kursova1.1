@@ -14,8 +14,8 @@ public class PersonService implements IService{
         this.allPersons = new ArrayList<>();
     }
 
-    @Override
-    public Person findPersonByUuid(UUID uuid) {
+
+    public Person isPersonCreated(UUID uuid) {
         for(int i=0; i<this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
             if(existedPerson.getUuid() == uuid) {
@@ -38,7 +38,7 @@ public class PersonService implements IService{
 
     @Override
     public boolean addNewPerson(Person person) {
-        if(findPersonByUuid(person.getUuid()) != null) {
+        if(isPersonCreated(person.getUuid()) != null) {
             System.out.println("Person already exist");
             return false;
         }
@@ -49,7 +49,7 @@ public class PersonService implements IService{
 
     @Override
     public boolean removePerson(Person person) {
-        if(findPersonByUuid(person.getUuid()) != null) {
+        if(isPersonCreated(person.getUuid()) != null) {
             System.out.println(person.getName() + " was not found");
             return false;
         }
