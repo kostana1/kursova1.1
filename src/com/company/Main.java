@@ -164,11 +164,11 @@ public class Main {
             } catch (InputMismatchException e) {
                 scanner.nextLine();
                 System.out.println("Please pick a number from 1 to 10");
-//                e.printStackTrace();
+                e.printStackTrace();
             }
         }
-//        int result = pickNumber * answer;
-//        System.out.println(result);
+        int result = pickNumber * answer;
+        System.out.println(result);
 
     }
 
