@@ -4,6 +4,7 @@ import com.enumex.EGender;
 import com.enumex.EStatus;
 import com.person.Person;
 import com.service.PersonService;
+import sun.util.calendar.BaseCalendar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +13,15 @@ import java.util.Scanner;
 import java.util.UUID;
 
 public class Main {
+
+    public static final String NAME_INPUT = "Enter your name";
+    public static final String GENDER_INPUT = "Pick a number.***0 for male <-> 1 for female***";
+    public static final String DATE_INPUT = "Enter your date of birth";
+    public static final String INTEREST_INPUT = "Enter your interests *** max symbols = 250 ***";
+    public static final String STATUS_INPUT = "Enter your status *** 0 for single <-> 1 for in relationship <-> 2 for married";
+    public static final String INVALID_INPUT = "Invalid %s input";
+    public static final String SUCCESSFUL_INPUT = "%s successfully added";
+    public static final String USE_INTEGERS_ONLY = "Use integers as per description";
 
     private static Scanner scanner = new Scanner(System.in);
     private static PersonService personService = new PersonService();
@@ -40,8 +50,8 @@ public class Main {
                     createPerson();
                     break;
 
-                case 3:
-                    removePerson();
+//                case 3:
+//                    removePerson();
 
                 case 4:
                     searchContact();
@@ -72,64 +82,71 @@ public class Main {
 
     private static void createPerson() {
 
-        System.out.println("Enter your name");
+        System.out.println(NAME_INPUT);
         String name = scanner.nextLine();
         if (name.matches("[a-zA-z]{3,}")) {
-            System.out.println("Name added successfully");
+            System.out.format(SUCCESSFUL_INPUT, name);
+            System.out.println();
         } else {
-            System.out.println("Invalid name input");
+            System.out.format(INVALID_INPUT, name);
+            System.out.println();
             return;
         }
 
-        System.out.println("Pick a number.***0 for male <-> 1 for female***");
+        System.out.println(GENDER_INPUT);
         EGender gender;
         try {
             int genderInput = Integer.parseInt(scanner.nextLine());
             if (genderInput >= 0 && genderInput <= 1) {
                 gender = EGender.values()[genderInput];
-                System.out.println("Gender added successfully");
+                System.out.format(SUCCESSFUL_INPUT, gender);
+                System.out.println();
             } else {
-                System.out.println("Enter from 0 to 1");
+                System.out.println(USE_INTEGERS_ONLY);
                 return;
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            System.out.println("Invalid gender input use digits only next time");
+            System.out.println();
             return;
         }
 
-        System.out.println("Enter your date of birth");
+        System.out.println(DATE_INPUT);
         Date dateOfBirth = null;
         String dateOfBirthInput = scanner.nextLine();
-        String dateOfBirthPattern = "dd/MM/yyyy";
+        String dateOfBirthPattern = "MM/dd/yyyy";
         SimpleDateFormat formatDateOfBirth = new SimpleDateFormat(dateOfBirthPattern);
         try {
             dateOfBirth = formatDateOfBirth.parse(dateOfBirthInput);
+            System.out.format(SUCCESSFUL_INPUT, dateOfBirth);
+            System.out.println();
         } catch (ParseException e) {
             e.printStackTrace();
-            System.out.println("Enter integers only");
+            System.out.println(USE_INTEGERS_ONLY);
         }
 
-        System.out.println("Enter your interests *** max symbols = 250 ***");
+        System.out.println(INTEREST_INPUT);
         char limit = 250;
         String interests = scanner.nextLine();
         if (interests.length() > limit) {
             interests = interests.substring(0, limit);
         }
 
-        System.out.println("Enter your status *** 0 for single <-> 1 for in relationship <-> 2 for married");
+        System.out.println(STATUS_INPUT);
         EStatus status;
         try {
             int statusInput = Integer.parseInt(scanner.nextLine());
             if (statusInput >= 0 && statusInput <= 2) {
                 status = EStatus.values()[statusInput];
+                System.out.format(SUCCESSFUL_INPUT, status);
+                System.out.println();
             } else {
-                System.out.println("Enter from 0 to 2");
+                System.out.println(USE_INTEGERS_ONLY);
                 return;
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            System.out.println("Enter digits only");
+            System.out.println(USE_INTEGERS_ONLY);
             return;
         }
 
@@ -142,31 +159,31 @@ public class Main {
         }
     }
 
-    private static void removePerson() {
-        System.out.println("Enter existing personal number uuid");
-        String uuid = scanner.next();
-        UUID uuidInput = UUID.fromString(uuid);
-        Person existingPerson = personService.isPersonCreated(uuidInput);
-
-        if (personService.removePerson(existingPerson)) {
-            System.out.println("Successfully deleted");
-        } else {
-            System.out.println("Error deleting contact");
-        }
-    }
+    // Revision needed
+//    private static void removePerson() {
+//        System.out.println("Enter existing personal number uuid");
+//        String dateOfBirthInput = scanner.next();
+//        SimpleDateFormat dateOfBirth = SimpleDateFormat.
+//
+//        if (personService.removePerson(?????)) {
+//            System.out.println("Successfully deleted");
+//        } else {
+//            System.out.println("Error deleting contact");
+//        }
+//    }
 
     private static void searchContact() {
         System.out.println("Enter existing name");
         String name = scanner.nextLine();
         Person existingPerson = personService.findPersonByName(name);
-        System.out.println(existingPerson.toString());
+        System.out.println(existingPerson.getName());
     }
 
     public static void questions() {
 
         int firstAnswer = 0;
-        int secondAnswer = 0;
-        int result = 0;
+        int secondAnswer;
+        int result;
 
         System.out.println("Select a number from 1 to 10 to assess your fairness when answering ");
         while (true) {

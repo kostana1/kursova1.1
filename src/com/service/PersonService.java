@@ -3,8 +3,8 @@ package com.service;
 import com.person.Person;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class PersonService implements IService{
 
@@ -14,15 +14,47 @@ public class PersonService implements IService{
         this.allPersons = new ArrayList<>();
     }
 
-
-    public Person isPersonCreated(UUID uuid) {
+    private boolean findPersonByDateOfBirth(Date dateOfBirth) {
         for(int i=0; i<this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
-            if(existedPerson.getUuid() == uuid) {
-                return existedPerson;
+            if(existedPerson.getDateOfBirth() == dateOfBirth) {
+                return true;
             }
         }
-        return null;
+        return false;
+    }
+
+    private boolean isPersonCreated(Person person) {
+        if(findPersonByDateOfBirth(person.getDateOfBirth())) {
+            System.out.println("Person already in the list");
+            return true;
+        }else {
+            System.out.println("Yet to be made");
+            return false;
+        }
+    }
+
+    @Override
+    public boolean addNewPerson(Person person) {
+        if(isPersonCreated(person)) {
+            System.out.println("Person already exist");
+            return false;
+        }
+        allPersons.add(person);
+        System.out.println("Person created");
+        return true;
+    }
+
+    @Override
+    public boolean removePerson(Person person) {
+        if(isPersonCreated(person)) {
+            this.allPersons.remove(person);
+            System.out.println(person.getName() + " deleted");
+            return true;
+        }else {
+            System.out.println(person.getName() + " was not found");
+            return false;
+        }
     }
 
     @Override
@@ -34,28 +66,6 @@ public class PersonService implements IService{
             }
         }
         return null;
-    }
-
-    @Override
-    public boolean addNewPerson(Person person) {
-        if(isPersonCreated(person.getUuid()) != null) {
-            System.out.println("Person already exist");
-            return false;
-        }
-        allPersons.add(person);
-        System.out.println("Person created");
-        return true;
-    }
-
-    @Override
-    public boolean removePerson(Person person) {
-        if(isPersonCreated(person.getUuid()) != null) {
-            System.out.println(person.getName() + " was not found");
-            return false;
-        }
-        this.allPersons.remove(person);
-        System.out.println(person.getName() + " deleted");
-        return true;
     }
 
     @Override
