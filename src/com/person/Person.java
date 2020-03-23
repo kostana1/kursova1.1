@@ -8,8 +8,9 @@ import java.util.UUID;
 
 public class Person {
 
-    private UUID uuid;
+    public static final String TO_STRING = "%s,%s,%s,%s,%s,%s";
 
+    private UUID uuid;
     private String name;
     private Date dateOfBirth;
     private String interests;
@@ -17,12 +18,12 @@ public class Person {
     private EStatus status;
 
     public Person(String name, EGender gender, Date dateOfBirth, String interests, EStatus status) {
+        this.uuid = UUID.randomUUID();
         this.name = name;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.interests = interests;
         this.status = status;
-        this.uuid = UUID.randomUUID();
     }
 
     public String getName() {
@@ -51,6 +52,24 @@ public class Person {
 
     @Override
     public String toString() {
-        return this.uuid + ", " + this.name + ", " + this.gender + ", " + this.dateOfBirth + ", " + this.interests + ", " + this.status;
+        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.uuid.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) {
+            return true;
+        }
+
+        if(obj instanceof Person) {
+            Person objectPerson = (Person) obj;
+            return this.uuid == objectPerson.getUuid();
+        }
+        return false;
     }
 }
