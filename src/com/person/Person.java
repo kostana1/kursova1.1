@@ -4,6 +4,7 @@ import com.enumex.EGender;
 import com.enumex.EStatus;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Person {
@@ -57,7 +58,7 @@ public class Person {
 
     @Override
     public int hashCode() {
-        return this.uuid.hashCode();
+        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class Person {
 
         if(obj instanceof Person) {
             Person objectPerson = (Person) obj;
-            return this.uuid == objectPerson.getUuid();
+            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests());
         }
         return false;
     }
