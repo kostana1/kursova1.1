@@ -1,10 +1,10 @@
 package com.service;
 
-import com.person.Person;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.person.Person;
 
 public class PersonService implements IPersonService {
 
@@ -14,7 +14,7 @@ public class PersonService implements IPersonService {
     public static final String PERSON_DELETED = "Person deleted";
     public static final String PERSON_LIST = "Person list";
 
-    private List<Person> allPersons;
+    protected List<Person> allPersons;
 
     public PersonService() {
         this.allPersons = new ArrayList<>();
@@ -22,9 +22,9 @@ public class PersonService implements IPersonService {
     }
 
     private boolean isPersonCreated(Person person) {
-        for(int i=0; i < this.allPersons.size(); i++) {
+        for (int i = 0; i < this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
-            if(existedPerson.equals(person)) {
+            if (existedPerson.equals(person)) {
                 System.out.println(PERSON_EXIST);
                 return true;
             }
@@ -34,7 +34,7 @@ public class PersonService implements IPersonService {
 
     @Override
     public boolean addNewPerson(Person person) {
-        if(isPersonCreated(person)) {
+        if (isPersonCreated(person)) {
             System.out.println(PERSON_EXIST);
             return false;
         }
@@ -45,11 +45,11 @@ public class PersonService implements IPersonService {
 
     @Override
     public boolean removePerson(Person person) {
-        if(isPersonCreated(person)) {
+        if (isPersonCreated(person)) {
             this.allPersons.remove(person);
             System.out.println(PERSON_DELETED);
             return true;
-        }else {
+        } else {
             System.out.println(PERSON_DOES_NOT_EXIST);
             return false;
         }
@@ -57,7 +57,7 @@ public class PersonService implements IPersonService {
 
     @Override
     public Person findPersonByName(String name) {
-        for(int i=0; i<this.allPersons.size(); i++) {
+        for (int i = 0; i < this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
             if (existedPerson.getName().equals(name)) {
                 return existedPerson;
@@ -68,7 +68,7 @@ public class PersonService implements IPersonService {
 
     @Override
     public Person findPersonByDateOfBirth(Date dateOfBirth) {
-        for(int i=0; i<this.allPersons.size(); i++) {
+        for (int i = 0; i < this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
             if (existedPerson.getDateOfBirth() == dateOfBirth) {
                 System.out.println(dateOfBirth.toString());
@@ -82,7 +82,7 @@ public class PersonService implements IPersonService {
     @Override
     public void showPersons() {
         System.out.println(PERSON_LIST);
-        for(Person person : allPersons) {
+        for (Person person : allPersons) {
             System.out.println(person.toString());
         }
     }

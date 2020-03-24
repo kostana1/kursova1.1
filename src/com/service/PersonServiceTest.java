@@ -1,51 +1,51 @@
 package com.service;
 
+import java.util.Date;
+
 import com.enumex.EGender;
 import com.enumex.EStatus;
 import com.person.Person;
 
-import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class PersonServiceTest {
 
-    private static Person person;
-    private static PersonService personService;
-    private static String name;
-    private static EGender gender;
-    private static Date dateOfBirth;
-    private String interest;
-    private static EStatus status;
+    private PersonService classUnderTest;
 
     @org.junit.jupiter.api.BeforeEach
     void setup() {
-        person = new Person(name, gender, dateOfBirth, interest, status);
+        classUnderTest = new PersonService();
     }
 
     @org.junit.jupiter.api.Test
-    void addNewPerson() {
-        fail("Yet to be implemented");
+    public void givenPersonWithRealData_whenCreatingPerson_thenExpectToBeAddedInList() {
+        Person person = new Person("", EGender.FEMALE, new Date(), "slqdl", EStatus.IN_RELATIONSHIP);
+
+        classUnderTest.addNewPerson(person);
+
+        assertTrue(classUnderTest.allPersons.contains(person));
     }
 
     @org.junit.jupiter.api.Test
-    void removePerson() {
-        fail("Yet to be implemented");
+    public void givenNullablePerson_whenCreatingPerson_thenExpectNotToBeAddedInList() {
+
+        assertFalse(classUnderTest.addNewPerson(null));
     }
 
     @org.junit.jupiter.api.Test
-    void findPersonByName() {
-//        assertEquals("Petko", personService.findPersonByName(name));
-//        fail("Yet to be implemented");
+    public void givenPersonWithRealData_whenDeletingPerson_thenExpectToBeDeletedFromList_andReturnTrue() {
+        Person person = new Person("", EGender.FEMALE, new Date(), "slqdl", EStatus.IN_RELATIONSHIP);
+
+        classUnderTest.allPersons.add(person);
+
+        assertTrue(classUnderTest.removePerson(person));
+        assertFalse(classUnderTest.allPersons.contains(person));
     }
 
     @org.junit.jupiter.api.Test
-    void findPersonByDateOfBirth() {
-        fail("Yet to be implemented");
+    public void givenNullablePerson_whenDeletingPerson_thenExpectNothingToBeDeletedFromList_andReturnFalse() {
+        int sizeBeforeRemoveMethod = classUnderTest.allPersons.size();
+        assertFalse(classUnderTest.removePerson(null));
+        int sizeAfterRemoveMethod = classUnderTest.allPersons.size();
+        assertEquals(sizeBeforeRemoveMethod, sizeAfterRemoveMethod);
     }
 
-    @org.junit.jupiter.api.Test
-    void showPersons() {
-        fail("Yet to be implemented");
-    }
 }

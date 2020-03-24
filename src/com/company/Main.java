@@ -1,14 +1,14 @@
 package com.company;
 
-import com.enumex.EGender;
-import com.enumex.EStatus;
-import com.person.Person;
-import com.service.PersonService;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+
+import com.enumex.EGender;
+import com.enumex.EStatus;
+import com.person.Person;
+import com.service.PersonService;
 
 public class Main {
 
@@ -31,7 +31,8 @@ public class Main {
     public static final String PRINT_OPTIONS_MAIN_MENU = "\t\n 0 to quit \t\n 1 to show persons \t\n 2 to add new person \t\n 3 to remove person \t\n 4 to search person \t\n 5 answer our matching questions \t\n 6 to show options \nChoose your option: ";
     public static final String QUITTING = "Quitting now";
     public static final String FIRST_QUESTION = "Select a number from 1 to 10 to assess your fairness when answering ";
-    public static final String SECOND_QUESTION = "How often do you drink? " + "\n1 - I don't drink; 2 - Not very often; 3 - Every other day; 4 - Every day";
+    public static final String SECOND_QUESTION = "How often do you drink? "
+            + "\n1 - I don't drink; 2 - Not very often; 3 - Every other day; 4 - Every day";
     public static final String NEXT_ANSWER = "%d selected. Next question ...";
     public static final String LAST_ANSWER = "%d selected. Thank you for your time";
     public static final String RESULT = "Your result is %d";
@@ -52,32 +53,32 @@ public class Main {
             scanner.nextLine();
 
             switch (option) {
-                case 0:
-                    System.out.println(QUITTING);
-                    quit = true;
-                    break;
+            case 0:
+                System.out.println(QUITTING);
+                quit = true;
+                break;
 
-                case 1:
-                    personService.showPersons();
-                    break;
+            case 1:
+                personService.showPersons();
+                break;
 
-                case 2:
-                    createPerson();
-                    break;
+            case 2:
+                createPerson();
+                break;
 
-                case 3:
-                    removePerson();
+            case 3:
+                removePerson();
 
-                case 4:
-                    searchContact();
+            case 4:
+                searchContact();
 
-                case 5:
-                    questions();
-                    break;
+            case 5:
+                questions();
+                break;
 
-                case 6:
-                    printOptions();
-                    break;
+            case 6:
+                printOptions();
+                break;
             }
         }
 
@@ -220,21 +221,21 @@ public class Main {
                 System.out.println(USE_INTEGERS_ONLY);
             }
 
-            if(scanner.hasNextInt()) {
+            if (scanner.hasNextInt()) {
                 secondAnswer = scanner.nextInt();
                 int answerValue = 0;
                 switch (secondAnswer) {
-                    case 1:
-                        answerValue = 10;
+                case 1:
+                    answerValue = 10;
 
-                    case 2:
-                        answerValue = 20;
+                case 2:
+                    answerValue = 20;
 
-                    case 3:
-                        answerValue = 30;
+                case 3:
+                    answerValue = 30;
 
-                    case 4:
-                        answerValue = 40;
+                case 4:
+                    answerValue = 40;
 
                 }
 
@@ -247,7 +248,7 @@ public class Main {
                     System.out.println(CANNOT_PERFORM_ACTION);
                 }
                 return;
-            }else {
+            } else {
                 scanner.nextLine();
                 System.out.println(USE_INTEGERS_ONLY);
             }
