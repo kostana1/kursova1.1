@@ -28,15 +28,15 @@ public class Main {
     public static final String CHOOSE_OPTION = "\nEnter option: (Press 6 to show options)";
     public static final String RETURN_TO_MAIN_MENU = "Repeat again your input with the correct values this time";
     public static final String CREATE_PROFILE_MAIN_MENU = "\nCreate your profile";
-    public static final String PRINT_OPTIONS_MAIN_MENU = "\t\n 0 to quit" + "\t\n 1 to show persons" + "\t\n 2 to add new person" +
-            "\t\n 3 to remove person" + "\t\n 4 to search person" + "\t\n 5 answer our matching questions" + "\t\n 6 to show options" +
-            "\nChoose your option: ";
+    public static final String PRINT_OPTIONS_MAIN_MENU = "\t\n 0 to quit \t\n 1 to show persons \t\n 2 to add new person \t\n 3 to remove person \t\n 4 to search person \t\n 5 answer our matching questions \t\n 6 to show options \nChoose your option: ";
     public static final String QUITTING = "Quitting now";
     public static final String FIRST_QUESTION = "Select a number from 1 to 10 to assess your fairness when answering ";
     public static final String SECOND_QUESTION = "How often do you drink? " + "\n1 - I don't drink; 2 - Not very often; 3 - Every other day; 4 - Every day";
     public static final String NEXT_ANSWER = "%d selected. Next question ...";
     public static final String LAST_ANSWER = "%d selected. Thank you for your time";
     public static final String RESULT = "Your result is %d";
+    public static final String PATTERN_DATE_OF_BIRTH = "dd/MM/yyyy";
+    public static final String NAME_VALIDATION_REGEX = "[a-zA-z]{3,}";
 
     private static Scanner scanner = new Scanner(System.in);
     private static PersonService personService = new PersonService();
@@ -92,7 +92,7 @@ public class Main {
 
         System.out.println(NAME_INPUT);
         String name = scanner.nextLine();
-        if (name.matches("[a-zA-z]{3,}")) {
+        if (name.matches(NAME_VALIDATION_REGEX)) {
             System.out.format(SUCCESSFUL_INPUT, name);
             System.out.println();
         } else {
@@ -169,7 +169,7 @@ public class Main {
     public static Date formatDateOfBirth(String dateOfBirthString) {
         Date dateOfBirth = null;
         try {
-            dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").parse(dateOfBirthString);
+            dateOfBirth = new SimpleDateFormat(PATTERN_DATE_OF_BIRTH).parse(dateOfBirthString);
         } catch (ParseException e) {
             e.printStackTrace();
             System.out.println(USE_INTEGERS_ONLY);
