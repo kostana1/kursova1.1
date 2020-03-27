@@ -20,7 +20,7 @@ class PersonServiceTest {
     }
 
     @org.junit.jupiter.api.Test
-    void addNewPerson() {
+    void givenPersonWithRealData_whenCreatingPerson_thenAddedInList() {
         assertTrue(classUnderTest.addNewPerson(person));
     }
 
@@ -35,7 +35,7 @@ class PersonServiceTest {
     }
 
     @org.junit.jupiter.api.Test
-    void removePerson() {
+    void givenPersonWithRealData_whenRemovingPerson_thenExpectToBeRemovedFromList() {
         classUnderTest.addNewPerson(person);
         assertTrue(classUnderTest.removePerson(person));
         assertFalse(classUnderTest.allPersons.contains(person));
@@ -64,7 +64,7 @@ class PersonServiceTest {
     }
 
     @org.junit.jupiter.api.Test
-    void findPersonByName() {
+    void givenPersonWithRealName_whenFindingByName_thenExpectToBeFound() {
         classUnderTest.addNewPerson(person);
         assertEquals(person, classUnderTest.findPersonByName(person.getName()));
     }
@@ -76,7 +76,7 @@ class PersonServiceTest {
     }
 
     @org.junit.jupiter.api.Test
-    void findPersonByDateOfBirth() {
+    void givenPersonWithRealDateOfBirth_whenFindingByDateOfBirth_thenExpectToBeFound() {
         classUnderTest.addNewPerson(person);
         assertNotNull(classUnderTest.findPersonByDateOfBirth(person.getDateOfBirth()));
         assertSame(person, classUnderTest.findPersonByDateOfBirth(person.getDateOfBirth()));
