@@ -9,9 +9,11 @@ public class CommonUtils {
     public static final String PATTERN_DATE_OF_BIRTH = "yyyy-MM-dd";
     public static final String USE_INTEGERS_ONLY = "Use integers as per description";
 
+    private static final CreatePersonService createPersonService = new CreatePersonService();
+
     public static Date formatDateOfBirth(String dateOfBirthString) {
         Date dateOfBirth = null;
-        if(CreatePersonService.isValidDateOfBirth(dateOfBirthString)) {
+        if(createPersonService.isValidDateOfBirth(dateOfBirthString)) {
             try {
                 dateOfBirth = new SimpleDateFormat(PATTERN_DATE_OF_BIRTH).parse(dateOfBirthString);
             } catch (ParseException e) {
