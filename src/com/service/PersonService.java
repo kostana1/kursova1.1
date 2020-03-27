@@ -15,15 +15,28 @@ public class PersonService implements IPersonService {
     private static final String PERSON_DELETED = "Person deleted";
     private static final String PERSON_LIST = "Person list";
 
+    private static final PersonService personService = new PersonService();
+
     protected List<Person> allPersons;
 
     public PersonService() {
         this.allPersons = new ArrayList<>();
     }
 
+    protected static boolean isPersonCreated(Person person) {
+        for (int i = 0; i < personService.allPersons.size(); i++) {
+            Person existedPerson = personService.allPersons.get(i);
+            if (existedPerson.equals(person)) {
+                System.out.println(PERSON_EXIST);
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean addNewPerson(Person person) {
-        if (PersonServiceUtils.isPersonCreated(person)) {
+        if (isPersonCreated(person)) {
             System.out.println(PERSON_EXIST);
             return false;
         }else if(person == null) {
@@ -37,7 +50,7 @@ public class PersonService implements IPersonService {
 
     @Override
     public boolean removePerson(Person person) {
-        if (PersonServiceUtils.isPersonCreated(person)) {
+        if (isPersonCreated(person)) {
             this.allPersons.remove(person);
             System.out.println(PERSON_DELETED);
             return true;
