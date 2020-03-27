@@ -4,7 +4,6 @@ import com.person.Person;
 
 import java.util.Date;
 
-
 public interface IPersonService {
 
     Person findPersonByName(String name);

@@ -8,11 +8,12 @@ import java.util.List;
 
 public class PersonService implements IPersonService {
 
-    public static final String PERSON_EXIST = "Person existed already";
-    public static final String PERSON_DOES_NOT_EXIST = "Person does not exist";
-    public static final String PERSON_CREATED = "Person created";
-    public static final String PERSON_DELETED = "Person deleted";
-    public static final String PERSON_LIST = "Person list";
+    private static final String PERSON_EXIST = "Person existed already";
+    private static final String NULL_PERSON = "Cannot add null person";
+    private static final String PERSON_DOES_NOT_EXIST = "Person does not exist";
+    private static final String PERSON_CREATED = "Person created";
+    private static final String PERSON_DELETED = "Person deleted";
+    private static final String PERSON_LIST = "Person list";
 
     protected List<Person> allPersons;
 
@@ -20,21 +21,13 @@ public class PersonService implements IPersonService {
         this.allPersons = new ArrayList<>();
     }
 
-    protected boolean isPersonCreated(Person person) {
-        for (int i = 0; i < this.allPersons.size(); i++) {
-            Person existedPerson = this.allPersons.get(i);
-            if (existedPerson.equals(person)) {
-                System.out.println(PERSON_EXIST);
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public boolean addNewPerson(Person person) {
-        if (isPersonCreated(person) || person == null) {
+        if (PersonServiceUtils.isPersonCreated(person)) {
             System.out.println(PERSON_EXIST);
+            return false;
+        }else if(person == null) {
+            System.out.println(NULL_PERSON);
             return false;
         }
         allPersons.add(person);
@@ -44,7 +37,7 @@ public class PersonService implements IPersonService {
 
     @Override
     public boolean removePerson(Person person) {
-        if (isPersonCreated(person)) {
+        if (PersonServiceUtils.isPersonCreated(person)) {
             this.allPersons.remove(person);
             System.out.println(PERSON_DELETED);
             return true;

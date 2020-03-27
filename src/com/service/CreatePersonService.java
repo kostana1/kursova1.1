@@ -3,10 +3,7 @@ package com.service;
 import com.enumex.EGender;
 import com.enumex.EStatus;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
 public class CreatePersonService {
 
@@ -20,42 +17,19 @@ public class CreatePersonService {
     public static final String INTEREST_CHAR_LIMIT = "Your interests have been reduced to 250 characters";
     public static final String NAME_VALIDATION_REGEX = "[a-zA-z]{3,}";
     public static final String USE_INTEGERS_ONLY = "Use integers as per description";
-    public static final String PATTERN_DATE_OF_BIRTH = "yyyy-MM-dd";
-
-    private static final Scanner scannerIn = new Scanner(System.in);
-
-    public static int getUserInputInteger() {
-        return Integer.parseInt(scannerIn.nextLine());
-    }
-
-    public static String getUserInputString() {
-        return scannerIn.nextLine();
-    }
-
-    public static String wrongInputByUserReturnNewLine() {
-        return scannerIn.nextLine();
-    }
-
-    public static boolean scannerHasNextLine() {
-        return scannerIn.hasNextLine();
-    }
-
-    public static boolean scannerHasNextInt() {
-        return scannerIn.hasNextInt();
-    }
 
     public String createPersonName() {
         while (true) {
             System.out.println(NAME_INPUT);
-            if (scannerHasNextLine()) {
-                String name = getUserInputString();
+            if (CreatePersonServiceUtils.scannerHasNextLine()) {
+                String name = CreatePersonServiceUtils.getUserInputString();
                 if (name != null && name.matches(NAME_VALIDATION_REGEX)) {
                     System.out.format(SUCCESSFUL_INPUT, name);
                     System.out.println();
                     return name;
                 }
             } else {
-                wrongInputByUserReturnNewLine();
+                CreatePersonServiceUtils.wrongInputByUserReturnNewLine();
                 System.out.println(INVALID_INPUT);
             }
         }
@@ -65,72 +39,45 @@ public class CreatePersonService {
         System.out.println(GENDER_INPUT);
         EGender gender;
         while (true) {
-            if (scannerHasNextInt()) {
+            if (CreatePersonServiceUtils.scannerHasNextInt()) {
                 try {
-                    int genderInput = getUserInputInteger();
+                    int genderInput = CreatePersonServiceUtils.getUserInputInteger();
                     if (genderInput >= 0 && genderInput <= 1) {
                         gender = EGender.values()[genderInput];
                         System.out.format(SUCCESSFUL_INPUT, gender);
                         System.out.println();
                         return gender;
                     } else if (genderInput > 1) {
-                        wrongInputByUserReturnNewLine();
+                        CreatePersonServiceUtils.wrongInputByUserReturnNewLine();
                         System.out.println(USE_INTEGERS_ONLY);
                     }
                 } catch (NumberFormatException e) {
-                    wrongInputByUserReturnNewLine();
+                    CreatePersonServiceUtils.wrongInputByUserReturnNewLine();
                     System.out.println(USE_INTEGERS_ONLY + e.getMessage());
                 }
             } else {
-                wrongInputByUserReturnNewLine();
+                CreatePersonServiceUtils.wrongInputByUserReturnNewLine();
                 System.out.println(USE_INTEGERS_ONLY);
             }
-        }
-    }
-
-    public static Date formatDateOfBirth(String dateOfBirthString) {
-        Date dateOfBirth = null;
-        if(isValidDateOfBirth(dateOfBirthString)) {
-            try {
-                dateOfBirth = new SimpleDateFormat(PATTERN_DATE_OF_BIRTH).parse(dateOfBirthString);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                System.out.println(USE_INTEGERS_ONLY);
-            }
-        }
-        return dateOfBirth;
-    }
-
-    public static boolean isValidDateOfBirth(String dateOfBirth) {
-        if(dateOfBirth == null || !dateOfBirth.matches("\\d{4}-[01]\\d-[0-3]\\d")) {
-            return false;
-        }
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        try {
-            dateFormat.parse(dateOfBirth);
-            return true;
-        }catch (ParseException e) {
-            return false;
         }
     }
 
     public Date createPersonDateOfBirth() {
         System.out.println(DATE_INPUT);
         while (true) {
-            if (scannerHasNextLine()) {
-                String dateOfBirthInput = getUserInputString();
-                if(isValidDateOfBirth(dateOfBirthInput)) {
-                    Date dateOfBirth = formatDateOfBirth(dateOfBirthInput);
+            if (CreatePersonServiceUtils.scannerHasNextLine()) {
+                String dateOfBirthInput = CreatePersonServiceUtils.getUserInputString();
+                if(CreatePersonServiceUtils.isValidDateOfBirth(dateOfBirthInput)) {
+                    Date dateOfBirth = CreatePersonServiceUtils.formatDateOfBirth(dateOfBirthInput);
                     System.out.format(SUCCESSFUL_INPUT, dateOfBirth);
                     System.out.println();
                     return dateOfBirth;
                 }else {
-                    wrongInputByUserReturnNewLine();
+                    CreatePersonServiceUtils.wrongInputByUserReturnNewLine();
                     System.out.println(USE_INTEGERS_ONLY);
                 }
             } else {
-                wrongInputByUserReturnNewLine();
+                CreatePersonServiceUtils.wrongInputByUserReturnNewLine();
                 System.out.println(USE_INTEGERS_ONLY);
             }
         }
@@ -139,7 +86,7 @@ public class CreatePersonService {
     public String createPersonInterests() {
         char limit = 250;
         System.out.println(INTEREST_INPUT);
-        String interests = getUserInputString();
+        String interests = CreatePersonServiceUtils.getUserInputString();
         if (interests.length() > limit) {
             interests = interests.substring(0, limit);
             System.out.println(INTEREST_CHAR_LIMIT);
@@ -153,24 +100,24 @@ public class CreatePersonService {
         System.out.println(STATUS_INPUT);
         EStatus status;
         while (true) {
-            if (scannerHasNextLine()) {
+            if (CreatePersonServiceUtils.scannerHasNextLine()) {
                 try {
-                    int statusInput = getUserInputInteger();
+                    int statusInput = CreatePersonServiceUtils.getUserInputInteger();
                     if (statusInput >= 0 && statusInput <= 2) {
                         status = EStatus.values()[statusInput];
                         System.out.format(SUCCESSFUL_INPUT, status);
                         System.out.println();
                         return status;
                     } else if (statusInput > 2) {
-                        wrongInputByUserReturnNewLine();
+                        CreatePersonServiceUtils.wrongInputByUserReturnNewLine();
                         System.out.println(USE_INTEGERS_ONLY);
                     }
                 } catch (NumberFormatException e) {
-                    wrongInputByUserReturnNewLine();
+                    CreatePersonServiceUtils.wrongInputByUserReturnNewLine();
                     System.out.println(USE_INTEGERS_ONLY + e.getMessage());
                 }
             } else {
-                wrongInputByUserReturnNewLine();
+                CreatePersonServiceUtils.wrongInputByUserReturnNewLine();
                 System.out.println(USE_INTEGERS_ONLY);
             }
         }
