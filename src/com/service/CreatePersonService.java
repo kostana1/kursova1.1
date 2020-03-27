@@ -86,7 +86,7 @@ public class CreatePersonService {
         }
     }
 
-    public static boolean isValidDateOfBirth(String dateOfBirth) {
+    public boolean isValidDateOfBirth(String dateOfBirth) {
         if(dateOfBirth == null || !dateOfBirth.matches(PATTERN_REGEXP_YEAR)) {
             return false;
         }else {
