@@ -1,10 +1,10 @@
 package com.service;
 
+import com.person.Person;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.person.Person;
 
 public class PersonService implements IPersonService {
 
@@ -18,10 +18,9 @@ public class PersonService implements IPersonService {
 
     public PersonService() {
         this.allPersons = new ArrayList<>();
-
     }
 
-    private boolean isPersonCreated(Person person) {
+    protected boolean isPersonCreated(Person person) {
         for (int i = 0; i < this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
             if (existedPerson.equals(person)) {
@@ -34,7 +33,7 @@ public class PersonService implements IPersonService {
 
     @Override
     public boolean addNewPerson(Person person) {
-        if (isPersonCreated(person)) {
+        if (isPersonCreated(person) || person == null) {
             System.out.println(PERSON_EXIST);
             return false;
         }
@@ -59,8 +58,10 @@ public class PersonService implements IPersonService {
     public Person findPersonByName(String name) {
         for (int i = 0; i < this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
-            if (existedPerson.getName().equals(name)) {
-                return existedPerson;
+            if (!name.isEmpty()) {
+                if (existedPerson.getName().equals(name)) {
+                    return existedPerson;
+                }
             }
         }
         return null;
@@ -70,10 +71,10 @@ public class PersonService implements IPersonService {
     public Person findPersonByDateOfBirth(Date dateOfBirth) {
         for (int i = 0; i < this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
-            if (existedPerson.getDateOfBirth() == dateOfBirth) {
-                System.out.println(dateOfBirth.toString());
-                System.out.println(existedPerson);
-                return existedPerson;
+            if (dateOfBirth != null) {
+                if (existedPerson.getDateOfBirth() == dateOfBirth) {
+                    return existedPerson;
+                }
             }
         }
         return null;
