@@ -77,7 +77,7 @@ public class PersonService implements IPersonService {
     public Person findPersonByDateOfBirth(Date dateOfBirth) {
         for (int i = 0; i < this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
-            if (dateOfBirth != null) {
+            if (existedPerson != null) {
                 if (existedPerson.getDateOfBirth() == dateOfBirth) {
                     return existedPerson;
                 }

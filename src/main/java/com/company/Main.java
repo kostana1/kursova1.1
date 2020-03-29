@@ -101,7 +101,7 @@ public class Main {
         System.out.println(ENTER_EXISTING_NAME);
         String name = scanner.nextLine();
         Person existingPerson = personService.findPersonByName(name);
-        System.out.println(existingPerson.getName());
+        System.out.println(existingPerson.getName() + existingPerson.getDateOfBirth());
     }
 }
 
