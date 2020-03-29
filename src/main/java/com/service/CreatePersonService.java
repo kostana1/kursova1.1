@@ -17,7 +17,6 @@ public class CreatePersonService {
     public static final String SUCCESSFUL_INPUT = "%s successfully added";
     public static final String INTEREST_CHAR_LIMIT = "Your interests have been reduced to 250 characters";
     public static final String NAME_VALIDATION_REGEX = "[a-zA-z]{3,}";
-    public static final String PATTERN_REGEXP_YEAR = "\\d{4}-[01]\\d-[0-3]\\d";
     public static final String USE_INTEGERS_ONLY = "Use integers as per description";
 
     private static final Scanner scannerIn = new Scanner(System.in);
@@ -86,20 +85,14 @@ public class CreatePersonService {
         }
     }
 
-    public boolean isValidDateOfBirth(String dateOfBirth) {
-        if(dateOfBirth == null || !dateOfBirth.matches(PATTERN_REGEXP_YEAR)) {
-            return false;
-        }else {
-            return true;
-        }
-    }
+
 
     public Date createPersonDateOfBirth() {
         System.out.println(DATE_INPUT);
         while (true) {
             if (scannerHasNextLine()) {
                 String dateOfBirthInput = getUserInputString();
-                if(isValidDateOfBirth(dateOfBirthInput)) {
+                if(CommonUtils.isValidDateOfBirth(dateOfBirthInput)) {
                     Date dateOfBirth = CommonUtils.formatDateOfBirth(dateOfBirthInput);
                     System.out.format(SUCCESSFUL_INPUT, dateOfBirth);
                     System.out.println();
