@@ -22,23 +22,23 @@ public class CreatePersonService {
 
     private static final Scanner scannerIn = new Scanner(System.in);
 
-    public static int getUserInputParseInteger() {
+    public int getUserInputParseInteger() {
         return Integer.parseInt(scannerIn.nextLine());
     }
 
-    public static String getUserInputString() {
+    public String getUserInputString() {
         return scannerIn.nextLine();
     }
 
-    public static String wrongInputByUserReturnNewLine() {
+    public String wrongInputByUserReturnNewLine() {
         return scannerIn.nextLine();
     }
 
-    public static boolean scannerHasNextLine() {
+    public boolean scannerHasNextLine() {
         return scannerIn.hasNextLine();
     }
 
-    public static boolean scannerHasNextInt() {
+    public boolean scannerHasNextInt() {
         return scannerIn.hasNextInt();
     }
 
