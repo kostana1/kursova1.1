@@ -50,7 +50,7 @@ public class PersonService implements IPersonService {
 
     @Override
     public boolean removePerson(Person person) {
-        if (isPersonCreated(person)) {
+        if (person != null) {
             this.allPersons.remove(person);
             System.out.println(PERSON_DELETED);
             return true;
@@ -77,8 +77,8 @@ public class PersonService implements IPersonService {
     public Person findPersonByDateOfBirth(Date dateOfBirth) {
         for (int i = 0; i < this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
-            if (dateOfBirth != null) {
-                if (existedPerson.getDateOfBirth() == dateOfBirth) {
+            if (existedPerson != null) {
+                if (existedPerson.getDateOfBirth().equals(dateOfBirth)) {
                     return existedPerson;
                 }
             }
