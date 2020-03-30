@@ -35,10 +35,6 @@ public class Person {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
     public String getInterests() {
         return interests;
     }
