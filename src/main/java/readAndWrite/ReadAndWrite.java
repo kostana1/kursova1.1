@@ -1,8 +1,6 @@
 package readAndWrite;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class ReadAndWrite implements Map<Integer, MenuSingleRow> {
@@ -41,11 +39,11 @@ public class ReadAndWrite implements Map<Integer, MenuSingleRow> {
 
     public static void write(List<String> menuAnswers) throws IOException {
 
-//        while (true) {
-//            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("output.txt"))) {
-//                bufferedWriter.write(new Scanner(System.in).nextLine());
-//            }
-//        }
+        while (true) {
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("output.txt"))) {
+                bufferedWriter.write(new Scanner(System.in).nextLine());
+            }
+        }
     }
 
     @Override

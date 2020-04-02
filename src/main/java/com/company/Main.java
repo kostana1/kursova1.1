@@ -6,6 +6,9 @@ import com.service.CreatePersonService;
 import com.service.CommonUtils;
 import com.service.PersonService;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -40,8 +43,12 @@ public class Main {
                     quit = true;
                     break;
 
+//                case 1:
+//                    personService.showPersons();
+//                    break;
+
                 case 1:
-                    personService.showPersons();
+                    personService.showPersonsFromFile();
                     break;
 
                 case 2:
@@ -75,14 +82,36 @@ public class Main {
     public static void createPersonWithAllAttributes() {
 
         CreatePersonService createPersonService = new CreatePersonService();
-
         Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
-        if (personService.addNewPerson(newPerson)) {
-            System.out.println(newPerson.toString());
-        } else {
-            System.out.println(CANNOT_PERFORM_ACTION);
+
+
+        try (FileWriter fileWriter = new FileWriter("personsList.txt", true);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){
+
+            if (personService.addNewPerson(newPerson)) {
+                bufferedWriter.write(newPerson.toString());
+                bufferedWriter.newLine();
+                bufferedWriter.append(System.lineSeparator());
+                bufferedWriter.close();
+            } else {
+                System.out.println(CANNOT_PERFORM_ACTION);
+            }
+        }catch (IOException e) {
+            System.err.format("IOException: %s%n", e);
         }
     }
+
+//    public static void createPersonWithAllAttributes() {
+//
+//        CreatePersonService createPersonService = new CreatePersonService();
+//
+//        Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
+//        if (personService.addNewPerson(newPerson)) {
+//            System.out.println(newPerson.toString());
+//        } else {
+//            System.out.println(CANNOT_PERFORM_ACTION);
+//        }
+//    }
 
     public static void removePerson() {
         System.out.println(ENTER_EXISTING_DATE_OF_BIRTH_INPUT);

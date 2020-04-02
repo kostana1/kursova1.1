@@ -2,9 +2,13 @@ package com.service;
 
 import com.person.Person;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class PersonService implements IPersonService {
 
@@ -91,6 +95,26 @@ public class PersonService implements IPersonService {
         System.out.println(PERSON_LIST);
         for (Person person : allPersons) {
             System.out.println(person.toString());
+        }
+    }
+
+    @Override
+    public void showPersonsFromFile() {
+
+        String fileLoc = "C:\\Петко\\udemy\\java master class\\Martin_Project\\personsList.txt";
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileLoc))) {
+
+            String personLine;
+
+            while ((personLine = bufferedReader.readLine()) != null) {
+                String[] data = personLine.split(",");
+                UUID uuid = UUID.fromString(data[0]);
+                String name = data[1];
+                System.out.println(uuid + ", " + name);
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

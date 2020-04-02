@@ -20,6 +20,13 @@ public class CreatePersonService {
     public static final String PATTERN_REGEXP_YEAR = "\\d{4}-[01]\\d-[0-3]\\d";
     public static final String USE_INTEGERS_ONLY = "Use integers as per description";
 
+    public static final String FIRST_QUESTION = "Select a number from 1 to 10 to assess your fairness when answering ";
+    public static final String SECOND_QUESTION = "How often do you drink? " + "\n1 - I don't drink; 2 - Not very often; 3 - Every other day; 4 - Every day";
+    public static final String NEXT_ANSWER = "%d selected. Next question ...";
+    public static final String LAST_ANSWER = "%d selected. Thank you for your time";
+    public static final String RESULT = "Your result is %d";
+    public static final String CANNOT_PERFORM_ACTION = "Error performing action due to your input";
+
     private static final Scanner scannerIn = new Scanner(System.in);
 
     public int getUserInputParseInteger() {
@@ -28,6 +35,10 @@ public class CreatePersonService {
 
     public String getUserInputString() {
         return scannerIn.nextLine();
+    }
+
+    public int getUserInputInt() {
+        return scannerIn.nextInt();
     }
 
     public String wrongInputByUserReturnNewLine() {

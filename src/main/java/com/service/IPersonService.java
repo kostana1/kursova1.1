@@ -11,4 +11,5 @@ public interface IPersonService {
     boolean addNewPerson(Person person);
     boolean removePerson(Person person);
     void showPersons();
+    void showPersonsFromFile();
 }
