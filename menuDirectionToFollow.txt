@@ -1,6 +1,0 @@
-1,name,2
-2,gender,3
-3,dateOfBirth,4
-4,interest,5
-5,status,6
-6,questions,0

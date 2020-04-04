@@ -4,6 +4,7 @@ import com.enumex.EGender;
 import com.enumex.EStatus;
 
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CreatePersonService {
@@ -25,7 +26,6 @@ public class CreatePersonService {
     public static final String NEXT_ANSWER = "%d selected. Next question ...";
     public static final String LAST_ANSWER = "%d selected. Thank you for your time";
     public static final String RESULT = "Your result is %d";
-    public static final String CANNOT_PERFORM_ACTION = "Error performing action due to your input";
 
     private static final Scanner scannerIn = new Scanner(System.in);
 
@@ -164,5 +164,74 @@ public class CreatePersonService {
                 System.out.println(USE_INTEGERS_ONLY);
             }
         }
+    }
+
+    public int questions() {
+
+        int firstAnswer;
+        int secondAnswer;
+        int result = 0;
+        boolean quit = false;
+
+        System.out.println(FIRST_QUESTION);
+        while (!quit) {
+            if (scannerHasNextInt()) {
+                try {
+                    firstAnswer = getUserInputInt();
+                    if (firstAnswer >= 1 && firstAnswer <= 10) {
+                        System.out.format(NEXT_ANSWER, firstAnswer);
+                        System.out.println();
+                        System.out.println(SECOND_QUESTION);
+                        try {
+                            secondAnswer = getUserInputInt();
+                            int answerValue = 0;
+                            switch (secondAnswer) {
+                                case 1:
+                                    answerValue = 10;
+                                    break;
+
+                                case 2:
+                                    answerValue = 20;
+                                    break;
+
+                                case 3:
+                                    answerValue = 30;
+                                    break;
+
+                                case 4:
+                                    answerValue = 40;
+                                    break;
+                            }
+
+                            if (secondAnswer >= 1 && secondAnswer <= 4) {
+                                System.out.format(LAST_ANSWER, secondAnswer);
+                                System.out.println();
+                                result = firstAnswer * answerValue;
+                                quit = true;
+                            } else if (secondAnswer > 5) {
+                                getUserInputInt();
+                                System.out.println(USE_INTEGERS_ONLY);
+                            }
+
+                        } catch (InputMismatchException e) {
+                            getUserInputString();
+                            System.out.println(USE_INTEGERS_ONLY);
+                        }
+                    } else if (firstAnswer > 10) {
+                        getUserInputString();
+                        System.out.println(USE_INTEGERS_ONLY);
+                    }
+                } catch (InputMismatchException e) {
+                    getUserInputString();
+                    System.out.println(USE_INTEGERS_ONLY);
+                }
+            }else {
+                getUserInputInt();
+                System.out.println(USE_INTEGERS_ONLY);
+            }
+        }
+        System.out.format(RESULT, result);
+        System.out.println();
+        return result;
     }
 }
