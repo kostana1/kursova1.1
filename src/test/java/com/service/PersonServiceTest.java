@@ -14,7 +14,7 @@ class PersonServiceTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setup() {
-        person = new Person("name", EGender.MALE, new Date(), "sdfdsfdsfds", EStatus.IN_RELATIONSHIP);
+        person = new Person("name", EGender.MALE, new Date(), "sdfdsfdsfds", EStatus.IN_RELATIONSHIP, 20);
         classUnderTest = new PersonService();
     }
 
@@ -25,7 +25,7 @@ class PersonServiceTest {
 
     @org.junit.jupiter.api.Test
     public void givenPersonWithRealData_whenCreatingPerson_thenExpectToBeAddedInList() {
-        Person person = new Person("", EGender.MALE, new Date(), "dsfsd", EStatus.IN_RELATIONSHIP);
+        Person person = new Person("", EGender.MALE, new Date(), "dsfsd", EStatus.IN_RELATIONSHIP, 20);
     }
 
     @org.junit.jupiter.api.Test
@@ -42,7 +42,7 @@ class PersonServiceTest {
 
     @org.junit.jupiter.api.Test
     public void givenPersonWithRealData_whenCreatingPerson_thenExpectToBeDeletedFromList_andThenReturnTrue(){
-        Person person = new Person("",EGender.MALE, new Date(), "dsfsd", EStatus.IN_RELATIONSHIP);
+        Person person = new Person("",EGender.MALE, new Date(), "dsfsd", EStatus.IN_RELATIONSHIP, 20);
         classUnderTest.allPersons.add(person);
         assertTrue(classUnderTest.removePerson(person));
         assertFalse(classUnderTest.allPersons.contains(person));
@@ -58,7 +58,7 @@ class PersonServiceTest {
 
     @org.junit.jupiter.api.Test
     public void givenNullableName_whenFindingByName_thenExpectToReturnNull() {
-        Person person = new Person(null, EGender.MALE, new Date(), "dsfsd", EStatus.IN_RELATIONSHIP);
+        Person person = new Person(null, EGender.MALE, new Date(), "dsfsd", EStatus.IN_RELATIONSHIP, 20);
         assertNull(classUnderTest.findPersonByName(person.getName()), "null was not found");
     }
 
@@ -70,7 +70,7 @@ class PersonServiceTest {
 
     @org.junit.jupiter.api.Test
     public void givenNullableDateOfBirth_whenFindingByDateOfBirth_thenExpectToReturnNull() {
-        Person person = new Person("",EGender.MALE, null, "dsfsd", EStatus.IN_RELATIONSHIP);
+        Person person = new Person("",EGender.MALE, null, "dsfsd", EStatus.IN_RELATIONSHIP, 20);
         assertNull(classUnderTest.findPersonByDateOfBirth(person.getDateOfBirth()));
     }
 

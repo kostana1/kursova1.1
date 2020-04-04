@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class Person {
 
-    public static final String TO_STRING = "%s,%s,%s,%s,%s,%s";
+    public static final String TO_STRING = "%s,%s,%s,%s,%s,%s,%s";
 
     private UUID uuid;
     private String name;
@@ -17,14 +17,16 @@ public class Person {
     private String interests;
     private EGender gender;
     private EStatus status;
+    private int question;
 
-    public Person(String name, EGender gender, Date dateOfBirth, String interests, EStatus status) {
+    public Person(String name, EGender gender, Date dateOfBirth, String interests, EStatus status, int question) {
         this.uuid = UUID.randomUUID();
         this.name = name;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.interests = interests;
         this.status = status;
+        this.question = question;
     }
 
     public String getName() {
@@ -51,14 +53,18 @@ public class Person {
         return uuid;
     }
 
+    public int getQuestion() {
+        return question;
+    }
+
     @Override
     public String toString() {
-        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status);
+        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status, question);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status);
+        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status, this.question);
     }
 
     @Override
@@ -69,7 +75,7 @@ public class Person {
 
         if(obj instanceof Person) {
             Person objectPerson = (Person) obj;
-            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests());
+            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests()) && this.question == objectPerson.getQuestion();
         }
         return false;
     }
