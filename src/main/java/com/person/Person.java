@@ -57,6 +57,7 @@ public class Person {
         return question;
     }
 
+<<<<<<< HEAD
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
@@ -85,6 +86,8 @@ public class Person {
         this.question = question;
     }
 
+=======
+>>>>>>> e5f5ea862462fd2b712f9f32b2da26da78942281
     @Override
     public String toString() {
         return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status, question);
