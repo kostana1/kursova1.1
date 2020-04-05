@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 38c29625-5560-47e5-874b-b7ca3fc394a1,Reni,FEMALE,2000-12-15,dsffdgf,IN_RELATIONSHIP,300
 How much do you drink?
 A lot,50
@@ -6,15 +5,6 @@ Sometimes,30
 Every once in a while,20
 Never,0
 86f2009e-c00b-4e09-b751-5f5de0c145fc,Docho,FEMALE,2000-09-09,dffdsgfd,IN_RELATIONSHIP,100
-=======
-725c20b0-e807-4de0-a242-06c52c32dc94,Ivan,2000-12-12,some interests here,male,single -> Person
-How much do you drink? -> Question(string question,list<answers>)
-A lot, 50 -> Answer(string, double) 
-Sometimes, 30
-Every once in a while, 20
-Never, 0
-2b29b99c-2a49-44f9-9ed4-c872dc8f728e,Georgi,2012-12-12,some other interest here,male,not single
->>>>>>> e5f5ea862462fd2b712f9f32b2da26da78942281
 How much do you smoke?
 2 packs a day,50
 1 cigarette a day,30

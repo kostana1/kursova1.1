@@ -14,5 +14,4 @@ public interface IPersonService {
     boolean removePerson(Person person);
     void showPersons();
     void showPersonsFromFile();
-    void findYourPartner();
 }

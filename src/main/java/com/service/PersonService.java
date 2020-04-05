@@ -15,10 +15,7 @@ public class PersonService implements IPersonService {
     private static final String PERSON_CREATED = "Person created";
     private static final String PERSON_DELETED = "Person deleted";
     private static final String PERSON_LIST = "Person list";
-    private static final String MATCHING_FEMALE_RESULT = "You've been matched to drink with the following ladies ";
-    public static final String NO_MATCHING = "No luck this time, keep drinking alone ";
 
-//    private static final PersonService personService = new PersonService();
     private static Scanner scanner = new Scanner(System.in);
 
     public List<Person> allPersons;
@@ -119,52 +116,10 @@ public class PersonService implements IPersonService {
             String readData;
             while ((readData = bufferedReader.readLine()) != null && !readData.isEmpty()) {
                 System.out.println(readData);
-<<<<<<< HEAD
-=======
             }
         }catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void findYourPartner() {
-        List<String> allPersons = new ArrayList<>();
-        String fileLoc = "C:\\Петко\\udemy\\java master class\\Martin_Project\\personsList.txt";
-        String fileData;
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileLoc))){
-            while((fileData = bufferedReader.readLine()) != null && !fileData.isEmpty()) {
-                allPersons.add(fileData);
-            }
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String questionLoc = "C:\\Петко\\udemy\\java master class\\Martin_Project\\matchingQuestions.txt";
-
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(questionLoc))){
-            System.out.println(bufferedReader.readLine());
-            String genderInput = scanner.nextLine();
-            System.out.println(bufferedReader.readLine());
-            int myScore = Integer.parseInt(scanner.nextLine());
-
-
-            if(myScore == 300 && genderInput.equals("FEMALE")) {
-                for(int i=0; i < allPersons.size(); i++) {
-                    if(allPersons.get(i).contains("FEMALE") && allPersons.get(i).contains("300")) {
-                        System.out.println(MATCHING_FEMALE_RESULT);
-                        System.out.println(allPersons.get(i));
-                    }
-                }
-            }else {
-                System.out.println(NO_MATCHING);
->>>>>>> e5f5ea862462fd2b712f9f32b2da26da78942281
-            }
-
-            //to be created for MALE as well
-
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
