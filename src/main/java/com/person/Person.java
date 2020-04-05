@@ -57,6 +57,34 @@ public class Person {
         return question;
     }
 
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setInterests(String interests) {
+        this.interests = interests;
+    }
+
+    public void setGender(EGender gender) {
+        this.gender = gender;
+    }
+
+    public void setStatus(EStatus status) {
+        this.status = status;
+    }
+
+    public void setQuestion(int question) {
+        this.question = question;
+    }
+
     @Override
     public String toString() {
         return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status, question);

@@ -19,9 +19,10 @@ public class Main {
     public static final String ENTER_EXISTING_UUID = "Enter existing uuid";
     public static final String UUID_FOUND = "Person uuid found ";
     public static final String CANNOT_PERFORM_ACTION = "Error performing action due to your input";
+    public static final String CANNOT_FIND_UUID = "Cannot find uuid";
     public static final String SUCCESSFUL_PERFORM_OF_ACTION = "Successful output";
     public static final String CREATE_PROFILE_MAIN_MENU = "\nCreate your profile";
-    public static final String PRINT_OPTIONS_MAIN_MENU = "\t\n 0 to quit \t\n 1 to show persons \t\n 2 to add new person \t\n 3 to remove person \t\n 4 to search person \t\n 5 to show options \t\n 6 to find your partner \nChoose your option: ";
+    public static final String PRINT_OPTIONS_MAIN_MENU = "\t\n 0 to quit \t\n 1 to show persons \t\n 2 to add new person \t\n 3 to remove person \t\n 4 to search person \t\n 5 to show options \nChoose your option: ";
 
     private static PersonService personService = new PersonService();
     private static Scanner scanner = new Scanner(System.in);
@@ -64,14 +65,6 @@ public class Main {
 
                 case 5:
                     printOptions();
-                    break;
-
-                case 6:
-                    personService.findYourPartner();
-                    break;
-
-                case 7:
-                    askQuestion();
                     break;
             }
         }
@@ -144,31 +137,7 @@ public class Main {
         if(existingPerson != null) {
             System.out.println(existingPerson.getName() + ", " + UUID_FOUND);
         }else {
-            System.out.println("something wrong happen");
-        }
-    }
-
-    public static void askQuestion() {
-
-        String questionLoc = "C:\\Петко\\udemy\\java master class\\Martin_Project\\test.txt";
-        String questionData;
-
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(questionLoc))) {
-            if ((questionData = bufferedReader.readLine()) != null && !questionData.isEmpty()) {
-                String data[] = questionData.split(",");
-                UUID uuid = UUID.fromString(data[0]);
-
-                for(int i=0; i < personService.allPersons.size(); i++ ) {
-                    searchContactByUUID();
-                    if(uuid.equals(personService.allPersons.get(i).getUuid())) {
-                        System.out.println(bufferedReader.readLine());
-                    }
-                }
-            }
-
-
-        }catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(CANNOT_FIND_UUID);
         }
     }
 }

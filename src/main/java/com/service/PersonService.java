@@ -124,44 +124,4 @@ public class PersonService implements IPersonService {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void findYourPartner() {
-        List<String> allPersons = new ArrayList<>();
-        String fileLoc = "C:\\Петко\\udemy\\java master class\\Martin_Project\\personsList.txt";
-        String fileData;
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileLoc))){
-            while((fileData = bufferedReader.readLine()) != null && !fileData.isEmpty()) {
-                allPersons.add(fileData);
-            }
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String questionLoc = "C:\\Петко\\udemy\\java master class\\Martin_Project\\matchingQuestions.txt";
-
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(questionLoc))){
-            System.out.println(bufferedReader.readLine());
-            String genderInput = scanner.nextLine();
-            System.out.println(bufferedReader.readLine());
-            int myScore = Integer.parseInt(scanner.nextLine());
-
-
-            if(myScore == 300 && genderInput.equals("FEMALE")) {
-                for(int i=0; i < allPersons.size(); i++) {
-                    if(allPersons.get(i).contains("FEMALE") && allPersons.get(i).contains("300")) {
-                        System.out.println(MATCHING_FEMALE_RESULT);
-                        System.out.println(allPersons.get(i));
-                    }
-                }
-            }else {
-                System.out.println(NO_MATCHING);
-            }
-
-            //to be created for MALE as well
-
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
