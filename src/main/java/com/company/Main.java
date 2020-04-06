@@ -1,6 +1,7 @@
 package com.company;
 
 import com.person.Person;
+import com.quiz.FindPersonByUuidAndAskQuestion;
 import com.service.CreatePersonService;
 import com.service.CommonUtils;
 import com.service.PersonService;
@@ -22,7 +23,7 @@ public class Main {
     public static final String CANNOT_FIND_UUID = "Cannot find uuid";
     public static final String SUCCESSFUL_PERFORM_OF_ACTION = "Successful output";
     public static final String CREATE_PROFILE_MAIN_MENU = "\nCreate your profile";
-    public static final String PRINT_OPTIONS_MAIN_MENU = "\t\n 0 to quit \t\n 1 to show persons \t\n 2 to add new person \t\n 3 to remove person \t\n 4 to search person \t\n 5 to show options \nChoose your option: ";
+    public static final String PRINT_OPTIONS_MAIN_MENU = "\t\n 0 to quit \t\n 1 to show persons \t\n 2 to add new person \t\n 3 to remove person \t\n 4 to search person \t\n 5 to quiz \t\n 6 to show options \nChoose your option: ";
 
     private static PersonService personService = new PersonService();
     private static Scanner scanner = new Scanner(System.in);
@@ -64,6 +65,10 @@ public class Main {
                     break;
 
                 case 5:
+                    FindPersonByUuidAndAskQuestion.readFromFile();
+                    break;
+
+                case 6:
                     printOptions();
                     break;
             }
@@ -78,7 +83,7 @@ public class Main {
     public static void createPersonWithAllAttributes() {
 
         CreatePersonService createPersonService = new CreatePersonService();
-        Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus(), createPersonService.questions());
+        Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
 
 
         try (FileWriter fileWriter = new FileWriter("personsList.txt", true);

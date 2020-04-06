@@ -16,8 +16,6 @@ public class PersonService implements IPersonService {
     private static final String PERSON_DELETED = "Person deleted";
     private static final String PERSON_LIST = "Person list";
 
-    private static Scanner scanner = new Scanner(System.in);
-
     public List<Person> allPersons;
 
     public PersonService() {
@@ -121,5 +119,4 @@ public class PersonService implements IPersonService {
             e.printStackTrace();
         }
     }
-
 }

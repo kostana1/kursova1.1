@@ -2,6 +2,7 @@ package com.person;
 
 import com.enumex.EGender;
 import com.enumex.EStatus;
+import com.quiz.Question;
 
 import java.util.Date;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import java.util.UUID;
 
 public class Person {
 
-    public static final String TO_STRING = "%s,%s,%s,%s,%s,%s,%s";
+    public static final String TO_STRING = "%s,%s,%s,%s,%s,%s";
 
     private UUID uuid;
     private String name;
@@ -17,14 +18,23 @@ public class Person {
     private String interests;
     private EGender gender;
     private EStatus status;
-    private int question;
+    private Question question;
 
-    public Person(String name, EGender gender, Date dateOfBirth, String interests, EStatus status, int question) {
+    public Person(String name, EGender gender, Date dateOfBirth, String interests, EStatus status) {
         this.uuid = UUID.randomUUID();
         this.name = name;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.interests = interests;
+        this.status = status;
+    }
+
+    public Person(UUID uuid, String name, EGender gender, Date dateOfBirth, String interests, EStatus status, Question question) {
+        this.uuid = uuid;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.interests = interests;
+        this.gender = gender;
         this.status = status;
         this.question = question;
     }
@@ -53,49 +63,18 @@ public class Person {
         return uuid;
     }
 
-    public int getQuestion() {
+    public Question getQuestion() {
         return question;
     }
 
-<<<<<<< HEAD
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public void setInterests(String interests) {
-        this.interests = interests;
-    }
-
-    public void setGender(EGender gender) {
-        this.gender = gender;
-    }
-
-    public void setStatus(EStatus status) {
-        this.status = status;
-    }
-
-    public void setQuestion(int question) {
-        this.question = question;
-    }
-
-=======
->>>>>>> e5f5ea862462fd2b712f9f32b2da26da78942281
     @Override
     public String toString() {
-        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status, question);
+        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status, this.question);
+        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status);
     }
 
     @Override
@@ -106,7 +85,7 @@ public class Person {
 
         if(obj instanceof Person) {
             Person objectPerson = (Person) obj;
-            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests()) && this.question == objectPerson.getQuestion();
+            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests());
         }
         return false;
     }

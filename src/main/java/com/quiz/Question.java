@@ -23,12 +23,36 @@ public class Question {
         return null;
     }
 
-    public boolean addAnswer(String answerDescription, int points) {
-        if(findAnswers(answerDescription) == null) {
-            this.questionAnswers.add(new Answer(answerDescription, points));
+        public boolean addAnswer(Answer answer) {
+        if(findAnswers(answer.getAnswerDescription()) == null) {
+            this.questionAnswers.add(answer);
             return true;
         }
         return false;
+    }
+
+//    public boolean addAnswer(String answerDescription, int points) {
+//        if(findAnswers(answerDescription) == null) {
+//            this.questionAnswers.add(new Answer(answerDescription, points));
+//            return true;
+//        }
+//        return false;
+//    }
+
+    public void showAnswers() {
+        for(int i=0; i < this.questionAnswers.size(); i++) {
+            System.out.println(this.questionAnswers.get(i).getAnswerDescription());
+        }
+    }
+
+    public int showPoints(String answerDescription) {
+        int points = 0;
+        for(int i=0; i < this.questionAnswers.size(); i++) {
+            if(answerDescription.equals(this.questionAnswers.get(i).getAnswerDescription())) {
+                points = this.questionAnswers.get(i).getPoints();
+            }
+        }
+        return points;
     }
 
     @Override
