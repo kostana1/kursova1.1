@@ -8,7 +8,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PersonServiceFindPersonByUuidAndAskQuestion {
+class PersonServiceTest {
     private Person person;
     private PersonService classUnderTest;
 

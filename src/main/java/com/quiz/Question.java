@@ -31,14 +31,6 @@ public class Question {
         return false;
     }
 
-//    public boolean addAnswer(String answerDescription, int points) {
-//        if(findAnswers(answerDescription) == null) {
-//            this.questionAnswers.add(new Answer(answerDescription, points));
-//            return true;
-//        }
-//        return false;
-//    }
-
     public void showAnswers() {
         for(int i=0; i < this.questionAnswers.size(); i++) {
             System.out.println(this.questionAnswers.get(i).getAnswerDescription());

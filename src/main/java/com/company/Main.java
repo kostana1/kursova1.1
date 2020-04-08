@@ -3,7 +3,7 @@ package com.company;
 import com.person.Person;
 import com.quiz.FindPersonByUuidAndAskQuestion;
 import com.service.CreatePersonService;
-import com.service.CommonUtils;
+import com.Utils.CommonUtils;
 import com.service.PersonService;
 
 import java.io.*;
@@ -44,16 +44,12 @@ public class Main {
                     quit = true;
                     break;
 
-//                case 1:
-//                    personService.showPersons();
-//                    break;
-
                 case 1:
                     personService.showPersonsFromFile();
                     break;
 
                 case 2:
-                    createPersonWithAllAttributes();
+                    createPersonWithAllAttributesToFile();
                     break;
 
                 case 3:
@@ -80,7 +76,7 @@ public class Main {
         System.out.println(PRINT_OPTIONS_MAIN_MENU);
     }
 
-    public static void createPersonWithAllAttributes() {
+    public static void createPersonWithAllAttributesToFile() {
 
         CreatePersonService createPersonService = new CreatePersonService();
         Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
@@ -102,17 +98,17 @@ public class Main {
         }
     }
 
-//    public static void createPersonWithAllAttributes() {
-//
-//        CreatePersonService createPersonService = new CreatePersonService();
-//
-//        Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
-//        if (personService.addNewPerson(newPerson)) {
-//            System.out.println(newPerson.toString());
-//        } else {
-//            System.out.println(CANNOT_PERFORM_ACTION);
-//        }
-//    }
+    public static void createPersonWithAllAttributes() {
+
+        CreatePersonService createPersonService = new CreatePersonService();
+
+        Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
+        if (personService.addNewPerson(newPerson)) {
+            System.out.println(newPerson.toString());
+        } else {
+            System.out.println(CANNOT_PERFORM_ACTION);
+        }
+    }
 
     public static void removePerson() {
         System.out.println(ENTER_EXISTING_DATE_OF_BIRTH_INPUT);
