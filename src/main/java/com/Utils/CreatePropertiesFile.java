@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class AppProperties {
+public class CreatePropertiesFile {
 
     private  final String FILENAME = "application.properties";
-    private static final AppProperties properties_file = new AppProperties();
+    private static final CreatePropertiesFile PROPERTY_FILE = new CreatePropertiesFile();
     private Properties properties = new Properties();
 
-    private AppProperties() {
+    private CreatePropertiesFile() {
         InputStream inputStream = null;
 
         try {
@@ -34,7 +34,7 @@ public class AppProperties {
         return properties.getProperty(key);
     }
 
-    public static AppProperties getInstance() {
-        return properties_file;
+    public static CreatePropertiesFile getInstance() {
+        return PROPERTY_FILE;
     }
 }

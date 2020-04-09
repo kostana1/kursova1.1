@@ -3,7 +3,7 @@ package com.quiz;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
+public class Question implements IQuestion {
 
     private String questionDescription;
     public List<Answer> questionAnswers;
@@ -13,18 +13,20 @@ public class Question {
         this.questionAnswers = new ArrayList<>();
     }
 
-    private Answer findAnswers(String answerDescription) {
-        for(int i=0; i < this.questionAnswers.size(); i++) {
+    @Override
+    public Answer findAnswers(String answerDescription) {
+        for (int i = 0; i < this.questionAnswers.size(); i++) {
             Answer existedAnswer = this.questionAnswers.get(i);
-            if(existedAnswer.getAnswerDescription().equals(answerDescription)) {
+            if (existedAnswer.getAnswerDescription().equals(answerDescription)) {
                 return existedAnswer;
             }
         }
         return null;
     }
 
-        public boolean addAnswer(Answer answer) {
-        if(findAnswers(answer.getAnswerDescription()) == null) {
+    @Override
+    public boolean addAnswer(Answer answer) {
+        if (findAnswers(answer.getAnswerDescription()) == null) {
             this.questionAnswers.add(answer);
             return true;
         }
@@ -32,16 +34,18 @@ public class Question {
     }
 
     public void showAnswers() {
-        for(int i=0; i < this.questionAnswers.size(); i++) {
-            System.out.println(this.questionAnswers.get(i).getAnswerDescription());
+        for (int i = 0; i < this.questionAnswers.size(); i++) {
+            Answer existingAnswer = this.questionAnswers.get(i);
+            System.out.println(existingAnswer.getAnswerDescription());
         }
     }
 
     public int showPoints(String answerDescription) {
         int points = 0;
-        for(int i=0; i < this.questionAnswers.size(); i++) {
-            if(answerDescription.equals(this.questionAnswers.get(i).getAnswerDescription())) {
-                points = this.questionAnswers.get(i).getPoints();
+        for (int i = 0; i < this.questionAnswers.size(); i++) {
+            Answer existingAnswer = this.questionAnswers.get(i);
+            if (answerDescription.equals(existingAnswer.getAnswerDescription())) {
+                points = existingAnswer.getPoints();
             }
         }
         return points;

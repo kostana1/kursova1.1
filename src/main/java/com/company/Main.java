@@ -1,7 +1,7 @@
 package com.company;
 
+import com.Utils.CreatePropertiesFile;
 import com.person.Person;
-import com.quiz.FindPersonByUuidAndAskQuestion;
 import com.service.CreatePersonService;
 import com.Utils.CommonUtils;
 import com.service.PersonService;
@@ -9,23 +9,20 @@ import com.service.PersonService;
 import java.io.*;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Main {
 
     public static final String QUITTING = "Quitting now";
-    public static final String CHOOSE_OPTION = "\nEnter option: (Press 5 to show options)";
+    public static final String CHOOSE_OPTION = "\nEnter option: (Press 6 to show options)";
     public static final String ENTER_EXISTING_DATE_OF_BIRTH_INPUT = "Enter existing date of birth";
     public static final String ENTER_EXISTING_NAME = "Enter existing name";
-    public static final String ENTER_EXISTING_UUID = "Enter existing uuid";
-    public static final String UUID_FOUND = "Person uuid found ";
     public static final String CANNOT_PERFORM_ACTION = "Error performing action due to your input";
-    public static final String CANNOT_FIND_UUID = "Cannot find uuid";
     public static final String SUCCESSFUL_PERFORM_OF_ACTION = "Successful output";
     public static final String CREATE_PROFILE_MAIN_MENU = "\nCreate your profile";
     public static final String PRINT_OPTIONS_MAIN_MENU = "\t\n 0 to quit \t\n 1 to show persons \t\n 2 to add new person \t\n 3 to remove person \t\n 4 to search person \t\n 5 to quiz \t\n 6 to show options \nChoose your option: ";
 
     private static PersonService personService = new PersonService();
+    private static CreatePersonService createPersonService = new CreatePersonService();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -45,11 +42,11 @@ public class Main {
                     break;
 
                 case 1:
-                    personService.showPersonsFromFile();
+                    personService.showPersons();
                     break;
 
                 case 2:
-                    createPersonWithAllAttributesToFile();
+                    createPersonService.readDataFromFileAndCreatePerson();
                     break;
 
                 case 3:
@@ -61,7 +58,7 @@ public class Main {
                     break;
 
                 case 5:
-                    FindPersonByUuidAndAskQuestion.readFromFile();
+                    createPersonService.askPersonQuestionFromFile();
                     break;
 
                 case 6:
@@ -78,11 +75,11 @@ public class Main {
 
     public static void createPersonWithAllAttributesToFile() {
 
-        CreatePersonService createPersonService = new CreatePersonService();
         Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
 
+        String personListFilePath = CreatePropertiesFile.getInstance().getProperty("personListFilePath");
 
-        try (FileWriter fileWriter = new FileWriter("personsList.txt", true);
+        try (FileWriter fileWriter = new FileWriter(personListFilePath, true);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){
 
             if (personService.addNewPerson(newPerson)) {
@@ -99,8 +96,6 @@ public class Main {
     }
 
     public static void createPersonWithAllAttributes() {
-
-        CreatePersonService createPersonService = new CreatePersonService();
 
         Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
         if (personService.addNewPerson(newPerson)) {
@@ -128,18 +123,6 @@ public class Main {
         String name = scanner.nextLine();
         Person existingPerson = personService.findPersonByName(name);
         System.out.println(existingPerson.getName() + existingPerson.getDateOfBirth());
-    }
-
-    public static void searchContactByUUID() {
-        System.out.println(ENTER_EXISTING_UUID);
-        String uuidInput = scanner.nextLine();
-        UUID uuid = UUID.fromString(uuidInput);
-        Person existingPerson = personService.findPersonByUUID(uuid);
-        if(existingPerson != null) {
-            System.out.println(existingPerson.getName() + ", " + UUID_FOUND);
-        }else {
-            System.out.println(CANNOT_FIND_UUID);
-        }
     }
 }
 

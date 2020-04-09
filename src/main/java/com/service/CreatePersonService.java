@@ -1,11 +1,19 @@
 package com.service;
 
+import com.Utils.CreatePropertiesFile;
 import com.Utils.CommonUtils;
 import com.enumex.EGender;
 import com.enumex.EStatus;
+import com.person.Person;
+import com.quiz.Answer;
+import com.quiz.Question;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class CreatePersonService {
 
@@ -21,11 +29,15 @@ public class CreatePersonService {
     public static final String PATTERN_REGEXP_YEAR = "\\d{4}-[01]\\d-[0-3]\\d";
     public static final String USE_INTEGERS_ONLY = "Use integers as per description";
 
-    public static final String FIRST_QUESTION = "Select a number from 1 to 10 to assess your fairness when answering ";
-    public static final String SECOND_QUESTION = "How often do you drink? " + "\n1 - I don't drink; 2 - Not very often; 3 - Every other day; 4 - Every day";
-    public static final String NEXT_ANSWER = "%d selected. Next question ...";
-    public static final String LAST_ANSWER = "%d selected. Thank you for your time";
+    private static final String VALID_UUID = "Enter a valid uuid";
+    private static final String UUID_PATTERN = "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$";
+    private static final String INVALID_UUID = "You have entered wrong or invalid uuid";
+    private static final String PERSON_UUID_BELONGS_TO = "This uuid belongs to %s\n";
+    public static final String ANSWER_NOW_QUESTION = "Answer now %s's question...\n";
+    public static final String LINE_SEPARATOR = "*******************";
     public static final String RESULT = "Your result is %d";
+
+    private static PersonService personService = new PersonService();
 
     private static final Scanner scannerIn = new Scanner(System.in);
 
@@ -158,6 +170,70 @@ public class CreatePersonService {
                 wrongInputByUserReturnNewLine();
                 System.out.println(USE_INTEGERS_ONLY);
             }
+        }
+    }
+
+    public void readDataFromFileAndCreatePerson() {
+        String testFilePath = CreatePropertiesFile.getInstance().getProperty("testFilePath");
+
+        String readData;
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(testFilePath))) {
+            while ((readData = bufferedReader.readLine()) != null && !readData.isEmpty()) {
+                String[] personData = readData.split(",");
+                UUID uuid = UUID.fromString(personData[0]);
+                String name = personData[1];
+                EGender gender = EGender.valueOf(personData[2]);
+                Date date = CommonUtils.formatDateOfBirth(personData[3]);
+                String interest = personData[4];
+                EStatus status = EStatus.valueOf(personData[5]);
+
+                String questionLine;
+                questionLine = bufferedReader.readLine();
+                Question question = new Question(questionLine);
+                Person personFromFile = new Person(uuid, name, gender, date, interest, status, question);
+                personService.addNewPerson(personFromFile);
+
+                int counterAnswerLines = 0;
+
+                while ((readData = bufferedReader.readLine()) != null && !readData.isEmpty()) {
+                    String[] answerData = readData.split(",");
+                    String answerDescription = answerData[0];
+                    int answerPoint = Integer.parseInt(answerData[1]);
+                    counterAnswerLines++;
+
+                    question.addAnswer(new Answer(answerDescription, answerPoint));
+
+                    if (counterAnswerLines == 4) {
+                        break;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void askPersonQuestionFromFile() {
+
+        System.out.println(VALID_UUID);
+        String uuidInput = getUserInputString();
+        if (uuidInput.matches(UUID_PATTERN)) {
+            UUID uuid = UUID.fromString(uuidInput);
+            Person existingPerson = personService.findPersonByUUID(uuid);
+            if(existingPerson != null) {
+                System.out.format(PERSON_UUID_BELONGS_TO, existingPerson.getName());
+                System.out.format(ANSWER_NOW_QUESTION, existingPerson.getName());
+                System.out.println(LINE_SEPARATOR);
+                System.out.println(existingPerson.getQuestion());
+                existingPerson.getQuestion().showAnswers();
+                System.out.println(LINE_SEPARATOR);
+                String replyInput = getUserInputString();
+                if (!replyInput.isEmpty()) {
+                    System.out.format(RESULT, existingPerson.getQuestion().showPoints(replyInput));
+                }
+            }
+        } else {
+            System.out.println(INVALID_UUID);
         }
     }
 }

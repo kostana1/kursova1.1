@@ -1,5 +1,6 @@
 package com.service;
 
+import com.Utils.CreatePropertiesFile;
 import com.person.Person;
 
 import java.io.BufferedReader;
@@ -16,7 +17,7 @@ public class PersonService implements IPersonService {
     private static final String PERSON_DELETED = "Person deleted";
     private static final String PERSON_LIST = "Person list";
 
-    public List<Person> allPersons;
+    protected List<Person> allPersons;
 
     public PersonService() {
         this.allPersons = new ArrayList<>();
@@ -108,9 +109,9 @@ public class PersonService implements IPersonService {
 
     @Override
     public void showPersonsFromFile() {
-        String fileLoc = "C:\\Петко\\udemy\\java master class\\Martin_Project\\personsList.txt";
+        String personListFilePath = CreatePropertiesFile.getInstance().getProperty("personListFilePath");
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileLoc))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(personListFilePath))) {
             String readData;
             while ((readData = bufferedReader.readLine()) != null && !readData.isEmpty()) {
                 System.out.println(readData);
