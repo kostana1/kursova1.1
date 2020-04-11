@@ -1,14 +1,16 @@
 package com.service;
 
-import com.enumex.EGender;
-import com.enumex.EStatus;
-import com.person.Person;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import main.java.com.enumex.EGender;
+import main.java.com.enumex.EStatus;
+import main.java.com.person.Person;
+import main.java.com.service.PersonService;
 
 class PersonServiceTest {
+
     private Person person;
     private PersonService classUnderTest;
 
@@ -41,8 +43,8 @@ class PersonServiceTest {
     }
 
     @org.junit.jupiter.api.Test
-    public void givenPersonWithRealData_whenCreatingPerson_thenExpectToBeDeletedFromList_andThenReturnTrue(){
-        Person person = new Person("",EGender.MALE, new Date(), "dsfsd", EStatus.IN_RELATIONSHIP);
+    public void givenPersonWithRealData_whenCreatingPerson_thenExpectToBeDeletedFromList_andThenReturnTrue() {
+        Person person = new Person("", EGender.MALE, new Date(), "dsfsd", EStatus.IN_RELATIONSHIP);
         classUnderTest.allPersons.add(person);
         assertTrue(classUnderTest.removePerson(person));
         assertFalse(classUnderTest.allPersons.contains(person));
@@ -70,7 +72,7 @@ class PersonServiceTest {
 
     @org.junit.jupiter.api.Test
     public void givenNullableDateOfBirth_whenFindingByDateOfBirth_thenExpectToReturnNull() {
-        Person person = new Person("",EGender.MALE, null, "dsfsd", EStatus.IN_RELATIONSHIP);
+        Person person = new Person("", EGender.MALE, null, "dsfsd", EStatus.IN_RELATIONSHIP);
         assertNull(classUnderTest.findPersonByDateOfBirth(person.getDateOfBirth()));
     }
 
@@ -84,4 +86,5 @@ class PersonServiceTest {
     @org.junit.jupiter.api.Test
     void showPersons() {
     }
+
 }

@@ -13,6 +13,14 @@ public class Question implements IQuestion {
         this.questionAnswers = new ArrayList<>();
     }
 
+    public String getQuestionDescription() {
+        return questionDescription;
+    }
+
+    public List<Answer> getQuestionAnswers() {
+        return questionAnswers;
+    }
+
     @Override
     public Answer findAnswers(String answerDescription) {
         for (int i = 0; i < this.questionAnswers.size(); i++) {

@@ -1,19 +1,19 @@
 package com.service;
 
-import com.Utils.CreatePropertiesFile;
-import com.Utils.CommonUtils;
-import com.enumex.EGender;
-import com.enumex.EStatus;
-import com.person.Person;
-import com.quiz.Answer;
-import com.quiz.Question;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
+
+import main.java.com.Utils.CommonUtils;
+import main.java.com.Utils.CreatePropertiesFile;
+import main.java.com.enumex.EGender;
+import main.java.com.enumex.EStatus;
+import main.java.com.person.Person;
+import main.java.com.quiz.Answer;
+import main.java.com.quiz.Question;
 
 public class CreatePersonService {
 
@@ -37,12 +37,17 @@ public class CreatePersonService {
     public static final String LINE_SEPARATOR = "*******************";
     public static final String RESULT = "Your result is %d";
 
-    private static PersonService personService = new PersonService();
+    // dependency inversion, liskov substitution principle
+    private IPersonService personService;
 
     private static final Scanner scannerIn = new Scanner(System.in);
 
     public int getUserInputParseInteger() {
         return Integer.parseInt(scannerIn.nextLine());
+    }
+
+    public CreatePersonService(IPersonService personService) {
+        this.personService = personService;
     }
 
     public String getUserInputString() {
@@ -108,9 +113,9 @@ public class CreatePersonService {
     }
 
     public boolean isValidDateOfBirth(String dateOfBirth) {
-        if(dateOfBirth == null || !dateOfBirth.matches(PATTERN_REGEXP_YEAR)) {
+        if (dateOfBirth == null || !dateOfBirth.matches(PATTERN_REGEXP_YEAR)) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
@@ -120,11 +125,11 @@ public class CreatePersonService {
         while (true) {
             if (scannerHasNextLine()) {
                 String dateOfBirthInput = getUserInputString();
-                if(isValidDateOfBirth(dateOfBirthInput)) {
+                if (isValidDateOfBirth(dateOfBirthInput)) {
                     Date dateOfBirth = CommonUtils.formatDateOfBirth(dateOfBirthInput);
                     System.out.format(SUCCESSFUL_INPUT, dateOfBirth);
                     return dateOfBirth;
-                }else {
+                } else {
                     wrongInputByUserReturnNewLine();
                     System.out.println(USE_INTEGERS_ONLY);
                 }
@@ -220,7 +225,7 @@ public class CreatePersonService {
         if (uuidInput.matches(UUID_PATTERN)) {
             UUID uuid = UUID.fromString(uuidInput);
             Person existingPerson = personService.findPersonByUUID(uuid);
-            if(existingPerson != null) {
+            if (existingPerson != null) {
                 System.out.format(PERSON_UUID_BELONGS_TO, existingPerson.getName());
                 System.out.format(ANSWER_NOW_QUESTION, existingPerson.getName());
                 System.out.println(LINE_SEPARATOR);

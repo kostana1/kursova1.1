@@ -1,12 +1,16 @@
 package com.service;
 
-import com.Utils.CreatePropertiesFile;
-import com.person.Person;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import main.java.com.Utils.CreatePropertiesFile;
+import main.java.com.person.Person;
 
 public class PersonService implements IPersonService {
 
@@ -21,6 +25,11 @@ public class PersonService implements IPersonService {
 
     public PersonService() {
         this.allPersons = new ArrayList<>();
+    }
+
+    @Override
+    public List<Person> getAllPersons() {
+        return Collections.unmodifiableList(allPersons);
     }
 
     protected boolean isPersonCreated(Person person) {
@@ -39,7 +48,7 @@ public class PersonService implements IPersonService {
         if (isPersonCreated(person)) {
             System.out.println(PERSON_EXIST);
             return false;
-        }else if(person == null) {
+        } else if (person == null) {
             System.out.println(NULL_PERSON);
             return false;
         }
@@ -88,10 +97,10 @@ public class PersonService implements IPersonService {
 
     @Override
     public Person findPersonByUUID(UUID uuid) {
-        for(int i=0; i < this.allPersons.size(); i++) {
+        for (int i = 0; i < this.allPersons.size(); i++) {
             Person existedPerson = this.allPersons.get(i);
-            if(existedPerson != null) {
-                if(existedPerson.getUuid().equals(uuid)) {
+            if (existedPerson != null) {
+                if (existedPerson.getUuid().equals(uuid)) {
                     return existedPerson;
                 }
             }
@@ -116,8 +125,26 @@ public class PersonService implements IPersonService {
             while ((readData = bufferedReader.readLine()) != null && !readData.isEmpty()) {
                 System.out.println(readData);
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void showPersonsFromInternet() {
+        List<Person> personsFromInternet = readFromPersonsFromInternet();
+
+        // print persons
+
+        personsFromInternet.forEach(p -> System.out.println(p));
+
+    }
+
+    @Override
+    public List<Person> readFromPersonsFromInternet() {
+
+        // calls some link in the internet and reads persons from there
+
+        return null;
     }
 }
