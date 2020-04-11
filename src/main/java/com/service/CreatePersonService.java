@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -240,5 +241,14 @@ public class CreatePersonService {
         } else {
             System.out.println(INVALID_UUID);
         }
+    }
+
+    public void askPersonQuestiosFromInternet(String uuid) {
+        List<Person> personsFromInternet = this.personService.readFromPersonsFromInternet();
+
+        Person personFromInternet = personsFromInternet.stream().filter(person -> person.getUuid().equals(UUID.fromString(uuid))).findFirst()
+                .orElse(null);
+
+        // asking questions
     }
 }

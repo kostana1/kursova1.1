@@ -1,30 +1,37 @@
 package test.java.com.service;
 
-import com.person.Person;
+import java.util.ArrayList;
 
+import main.java.com.person.Person;
 import main.java.com.service.CreatePersonService;
 import main.java.com.service.IPersonService;
-import main.java.com.service.PersonService;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CreatePersonServiceTest {
 
-    private CreatePersonService classUnderTest;
-
+    @Mock
     private IPersonService personService;
 
-    private Person person;
+    private List<Person> persons;
+    @InjectMocks // makes the class to use the mock personService
+    private CreatePersonService classUnderTest;
 
     @Before
     public void setUp() {
-        personService = new PersonService();
         classUnderTest = new CreatePersonService(personService);
+        persons = new ArrayList<>();
+        persons.add(new Person()); // person with dummy data
     }
 
     @Test
-    public void whenLoadingPersonsFromFile_thenExpectRightPersonsToBeLoaded() {
-        
-        classUnderTest.readDataFromFileAndCreatePerson();
-        
-        assertTrue(personService.getAllPersons().contains(new Persons))
+    public void whenAskingInternetPersonQuestions_thenExpectToBeAsked() {
+        Mockito.when(personService.readFromPersonsFromInternet()).thenReturn(persons); // this way we ensure that this method will always return
+                                                                                       // our list and not try to execute the real implementation
+                                                                                       // and depend on whether we have internet or not
+
+        // testing logic
+
+        classUnderTest.askPersonQuestiosFromInternet("dummy");
     }
+
 }
