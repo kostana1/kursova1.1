@@ -20,6 +20,7 @@ public class Main {
     public static final String SUCCESSFUL_PERFORM_OF_ACTION = "Successful output";
     public static final String CREATE_PROFILE_MAIN_MENU = "\nCreate your profile";
     public static final String PRINT_OPTIONS_MAIN_MENU = "\t\n 0 to quit \t\n 1 to show persons \t\n 2 to add new person \t\n 3 to remove person \t\n 4 to search person \t\n 5 to quiz \t\n 6 to show options \nChoose your option: ";
+    public static final String PROPERTY_KEY = "personListFilePath";
 
     private static PersonService personService = new PersonService();
     private static CreatePersonService createPersonService = new CreatePersonService();
@@ -77,7 +78,7 @@ public class Main {
 
         Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
 
-        String personListFilePath = CreatePropertiesFile.getInstance().getProperty("personListFilePath");
+        String personListFilePath = CreatePropertiesFile.getInstance().getProperty(PROPERTY_KEY);
 
         try (FileWriter fileWriter = new FileWriter(personListFilePath, true);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){

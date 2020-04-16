@@ -20,7 +20,7 @@ import static com.enumex.EGender.FEMALE;
 class CreatePersonServiceTest {
 
     private List<Person> persons;
-    private static String QUESTION = "What's my name ?"
+    private static String QUESTION = "What's my name ?";
 
     private CreatePersonService classUnderTest;
     private AnswerService answerService;
