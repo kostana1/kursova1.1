@@ -1,37 +1,45 @@
-package test.java.com.service;
+package com.service;
 
+import com.enumex.EStatus;
+import com.person.Person;
+import com.quiz.Answer;
+import com.quiz.AnswerService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
-import main.java.com.person.Person;
-import main.java.com.service.CreatePersonService;
-import main.java.com.service.IPersonService;
+import static com.enumex.EGender.FEMALE;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CreatePersonServiceTest {
-
-    @Mock
-    private IPersonService personService;
+class CreatePersonServiceTest {
 
     private List<Person> persons;
-    @InjectMocks // makes the class to use the mock personService
-    private CreatePersonService classUnderTest;
 
-    @Before
-    public void setUp() {
-        classUnderTest = new CreatePersonService(personService);
+    private CreatePersonService classUnderTest;
+    private AnswerService answerService;
+
+    @BeforeEach
+    void setUp() {
+        classUnderTest = new CreatePersonService();
+        answerService = new AnswerService("What's my name ?");
+        answerService.questionAnswers.add(new Answer("Johny", 10));
+        answerService.questionAnswers.add(new Answer("Peter", 20));
+        answerService.questionAnswers.add(new Answer("Kondio", 30));
         persons = new ArrayList<>();
-        persons.add(new Person()); // person with dummy data
+        persons.add(new Person(UUID.randomUUID(), "Kondio", FEMALE, new Date(), "bla blah blah", EStatus.IN_RELATIONSHIP, answerService));
+
     }
 
     @Test
-    public void whenAskingInternetPersonQuestions_thenExpectToBeAsked() {
-        Mockito.when(personService.readFromPersonsFromInternet()).thenReturn(persons); // this way we ensure that this method will always return
-                                                                                       // our list and not try to execute the real implementation
-                                                                                       // and depend on whether we have internet or not
-
-        // testing logic
-
-        classUnderTest.askPersonQuestiosFromInternet("dummy");
+    void readFileLines() throws IOException {
+        BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
+        Mockito.when(bufferedReader.readLine()).thenReturn(persons.toString());
+        classUnderTest.readFileLines(bufferedReader);
     }
-
 }

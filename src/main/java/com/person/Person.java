@@ -2,7 +2,7 @@ package com.person;
 
 import com.enumex.EGender;
 import com.enumex.EStatus;
-import com.quiz.Question;
+import com.quiz.AnswerService;
 
 import java.util.Date;
 import java.util.Objects;
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class Person {
 
-    public static final String TO_STRING = "%s,%s,%s,%s,%s,%s";
+    public static final String TO_STRING = "%s,%s,%s,%s,%s,%s,%s";
 
     private UUID uuid;
     private String name;
@@ -18,7 +18,7 @@ public class Person {
     private String interests;
     private EGender gender;
     private EStatus status;
-    private Question question;
+    private AnswerService answerService;
 
     public Person(String name, EGender gender, Date dateOfBirth, String interests, EStatus status) {
         this.uuid = UUID.randomUUID();
@@ -29,14 +29,14 @@ public class Person {
         this.status = status;
     }
 
-    public Person(UUID uuid, String name, EGender gender, Date dateOfBirth, String interests, EStatus status, Question question) {
+    public Person(UUID uuid, String name, EGender gender, Date dateOfBirth, String interests, EStatus status, AnswerService answerService) {
         this.uuid = uuid;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.interests = interests;
         this.gender = gender;
         this.status = status;
-        this.question = question;
+        this.answerService = answerService;
     }
 
     public String getName() {
@@ -63,18 +63,18 @@ public class Person {
         return uuid;
     }
 
-    public Question getQuestion() {
-        return question;
+    public AnswerService getQuestion() {
+        return answerService;
     }
 
     @Override
     public String toString() {
-        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status);
+        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status, answerService);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status);
+        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status, this.answerService);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class Person {
 
         if(obj instanceof Person) {
             Person objectPerson = (Person) obj;
-            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests());
+            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests()) && this.answerService.equals(objectPerson.getQuestion());
         }
         return false;
     }

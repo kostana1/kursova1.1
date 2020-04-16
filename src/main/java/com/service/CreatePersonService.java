@@ -1,20 +1,19 @@
 package com.service;
 
+import com.utils.CreatePropertiesFile;
+import com.utils.CommonUtils;
+import com.enumex.EGender;
+import com.enumex.EStatus;
+import com.person.Person;
+import com.quiz.Answer;
+import com.quiz.AnswerService;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
-
-import main.java.com.Utils.CommonUtils;
-import main.java.com.Utils.CreatePropertiesFile;
-import main.java.com.enumex.EGender;
-import main.java.com.enumex.EStatus;
-import main.java.com.person.Person;
-import main.java.com.quiz.Answer;
-import main.java.com.quiz.Question;
 
 public class CreatePersonService {
 
@@ -38,17 +37,27 @@ public class CreatePersonService {
     public static final String LINE_SEPARATOR = "*******************";
     public static final String RESULT = "Your result is %d";
 
-    // dependency inversion, liskov substitution principle
-    private IPersonService personService;
+    private static PersonService personService = new PersonService();
+// dependency inversion, liskov substitution principle
+//    private IPersonService ipersonService;
 
     private static final Scanner scannerIn = new Scanner(System.in);
 
+//    public CreatePersonService(IPersonService ipersonService) {
+//        this.ipersonService = ipersonService;
+//    }
+
+//    public void asdPersonQuestionFromInternet(String uuid) {
+//        List<Person> personsFromInternet = this.ipersonService.readFromPersonsFromInternet();
+//
+//        Person personFromInternet = personsFromInternet.stream().filter(person -> person.getUuid().equals(UUID.fromString(uuid)))
+//                .findFirst().orElse(null);
+//
+//        //asking questions
+//    }
+
     public int getUserInputParseInteger() {
         return Integer.parseInt(scannerIn.nextLine());
-    }
-
-    public CreatePersonService(IPersonService personService) {
-        this.personService = personService;
     }
 
     public String getUserInputString() {
@@ -179,43 +188,47 @@ public class CreatePersonService {
         }
     }
 
-    public void readDataFromFileAndCreatePerson() {
+    public void readPropertyFileAndExecuteReadFileLinesMethod() throws IOException {
         String testFilePath = CreatePropertiesFile.getInstance().getProperty("testFilePath");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(testFilePath));
+        readFileLines(bufferedReader);
 
-        String readData;
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(testFilePath))) {
-            while ((readData = bufferedReader.readLine()) != null && !readData.isEmpty()) {
-                String[] personData = readData.split(",");
-                UUID uuid = UUID.fromString(personData[0]);
-                String name = personData[1];
-                EGender gender = EGender.valueOf(personData[2]);
-                Date date = CommonUtils.formatDateOfBirth(personData[3]);
-                String interest = personData[4];
-                EStatus status = EStatus.valueOf(personData[5]);
+    }
 
-                String questionLine;
-                questionLine = bufferedReader.readLine();
-                Question question = new Question(questionLine);
-                Person personFromFile = new Person(uuid, name, gender, date, interest, status, question);
-                personService.addNewPerson(personFromFile);
+    public void readFileLines(BufferedReader bufferedReader) throws IOException {
 
-                int counterAnswerLines = 0;
+        String readPersonData;
+        String readAnswerData;
 
-                while ((readData = bufferedReader.readLine()) != null && !readData.isEmpty()) {
-                    String[] answerData = readData.split(",");
-                    String answerDescription = answerData[0];
-                    int answerPoint = Integer.parseInt(answerData[1]);
-                    counterAnswerLines++;
+        while ((readPersonData = bufferedReader.readLine()) != null && !readPersonData.isEmpty()) {
+            String[] personData = readPersonData.split(",");
+            UUID uuid = UUID.fromString(personData[0]);
+            String name = personData[1];
+            EGender gender = EGender.valueOf(personData[2]);
+            Date date = CommonUtils.formatDateOfBirth(personData[3]);
+            String interest = personData[4];
+            EStatus status = EStatus.valueOf(personData[5]);
 
-                    question.addAnswer(new Answer(answerDescription, answerPoint));
+            String questionLine;
+            questionLine = bufferedReader.readLine();
+            AnswerService answerService = new AnswerService(questionLine);
+            Person personFromFile = new Person(uuid, name, gender, date, interest, status, answerService);
+            personService.addNewPerson(personFromFile);
 
-                    if (counterAnswerLines == 4) {
-                        break;
-                    }
+            int counterAnswerLines = 0;
+
+            while ((readAnswerData = bufferedReader.readLine()) != null && !readAnswerData.isEmpty()) {
+                String[] answerData = readAnswerData.split(",");
+                String answerDescription = answerData[0];
+                int answerPoint = Integer.parseInt(answerData[1]);
+                counterAnswerLines++;
+
+                answerService.addAnswer(new Answer(answerDescription, answerPoint));
+
+                if (counterAnswerLines == 4) {
+                    break;
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -241,14 +254,5 @@ public class CreatePersonService {
         } else {
             System.out.println(INVALID_UUID);
         }
-    }
-
-    public void askPersonQuestiosFromInternet(String uuid) {
-        List<Person> personsFromInternet = this.personService.readFromPersonsFromInternet();
-
-        Person personFromInternet = personsFromInternet.stream().filter(person -> person.getUuid().equals(UUID.fromString(uuid))).findFirst()
-                .orElse(null);
-
-        // asking questions
     }
 }

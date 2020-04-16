@@ -3,22 +3,14 @@ package com.quiz;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question implements IQuestion {
+public class AnswerService implements IAnswerService {
 
     private String questionDescription;
     public List<Answer> questionAnswers;
 
-    public Question(String questionDescription) {
+    public AnswerService(String questionDescription) {
         this.questionDescription = questionDescription;
         this.questionAnswers = new ArrayList<>();
-    }
-
-    public String getQuestionDescription() {
-        return questionDescription;
-    }
-
-    public List<Answer> getQuestionAnswers() {
-        return questionAnswers;
     }
 
     @Override
@@ -41,6 +33,7 @@ public class Question implements IQuestion {
         return false;
     }
 
+    @Override
     public void showAnswers() {
         for (int i = 0; i < this.questionAnswers.size(); i++) {
             Answer existingAnswer = this.questionAnswers.get(i);
@@ -48,6 +41,7 @@ public class Question implements IQuestion {
         }
     }
 
+    @Override
     public int showPoints(String answerDescription) {
         int points = 0;
         for (int i = 0; i < this.questionAnswers.size(); i++) {

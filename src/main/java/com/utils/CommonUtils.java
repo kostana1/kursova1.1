@@ -1,6 +1,7 @@
-package com.Utils;
+package com.utils;
 
 import com.service.CreatePersonService;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

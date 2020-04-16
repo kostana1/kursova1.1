@@ -1,9 +1,9 @@
 package com.company;
 
-import com.Utils.CreatePropertiesFile;
+import com.utils.CreatePropertiesFile;
 import com.person.Person;
 import com.service.CreatePersonService;
-import com.Utils.CommonUtils;
+import com.utils.CommonUtils;
 import com.service.PersonService;
 
 import java.io.*;
@@ -25,7 +25,7 @@ public class Main {
     private static CreatePersonService createPersonService = new CreatePersonService();
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         boolean quit = false;
         printOptions();
@@ -46,7 +46,7 @@ public class Main {
                     break;
 
                 case 2:
-                    createPersonService.readDataFromFileAndCreatePerson();
+                    createPersonService.readPropertyFileAndExecuteReadFileLinesMethod();
                     break;
 
                 case 3:
