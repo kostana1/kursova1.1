@@ -20,6 +20,7 @@ import static com.enumex.EGender.FEMALE;
 class CreatePersonServiceTest {
 
     private List<Person> persons;
+    private static String QUESTION = "What's my name ?"
 
     private CreatePersonService classUnderTest;
     private AnswerService answerService;
@@ -27,7 +28,7 @@ class CreatePersonServiceTest {
     @BeforeEach
     void setUp() {
         classUnderTest = new CreatePersonService();
-        answerService = new AnswerService("What's my name ?");
+        answerService = new AnswerService(QUESTION);
         answerService.questionAnswers.add(new Answer("Johny", 10));
         answerService.questionAnswers.add(new Answer("Peter", 20));
         answerService.questionAnswers.add(new Answer("Kondio", 30));
