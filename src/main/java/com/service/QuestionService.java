@@ -1,15 +1,15 @@
-package com.quiz;
+package com.service;
+
+import com.quiz.Answer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnswerService implements IAnswerService {
+public class QuestionService implements IQuestionService {
 
-    private String questionDescription;
-    public List<Answer> questionAnswers;
+    protected List<Answer> questionAnswers;
 
-    public AnswerService(String questionDescription) {
-        this.questionDescription = questionDescription;
+    public QuestionService() {
         this.questionAnswers = new ArrayList<>();
     }
 
@@ -51,10 +51,5 @@ public class AnswerService implements IAnswerService {
             }
         }
         return points;
-    }
-
-    @Override
-    public String toString() {
-        return this.questionDescription;
     }
 }

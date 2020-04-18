@@ -1,6 +1,6 @@
 package com.service;
 
-import com.utils.CreatePropertiesFile;
+import com.utils.LoadPropertiesFile;
 import com.person.Person;
 
 import java.io.BufferedReader;
@@ -129,7 +129,7 @@ public class PersonService implements IPersonService {
 
     @Override
     public void showPersonsFromFile() {
-        String personListFilePath = CreatePropertiesFile.getInstance().getProperty("personListFilePath");
+        String personListFilePath = LoadPropertiesFile.getInstance().getProperty("personListFilePath");
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(personListFilePath))) {
             String readData;

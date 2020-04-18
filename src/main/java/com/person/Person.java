@@ -2,7 +2,7 @@ package com.person;
 
 import com.enumex.EGender;
 import com.enumex.EStatus;
-import com.quiz.AnswerService;
+import com.quiz.Question;
 
 import java.util.Date;
 import java.util.Objects;
@@ -18,7 +18,7 @@ public class Person {
     private String interests;
     private EGender gender;
     private EStatus status;
-    private AnswerService answerService;
+    private Question question;
 
     public Person(String name, EGender gender, Date dateOfBirth, String interests, EStatus status) {
         this.uuid = UUID.randomUUID();
@@ -29,14 +29,14 @@ public class Person {
         this.status = status;
     }
 
-    public Person(UUID uuid, String name, EGender gender, Date dateOfBirth, String interests, EStatus status, AnswerService answerService) {
+    public Person(UUID uuid, String name, EGender gender, Date dateOfBirth, String interests, EStatus status, Question question) {
         this.uuid = uuid;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.interests = interests;
         this.gender = gender;
         this.status = status;
-        this.answerService = answerService;
+        this.question = question;
     }
 
     public String getName() {
@@ -63,18 +63,18 @@ public class Person {
         return uuid;
     }
 
-    public AnswerService getQuestion() {
-        return answerService;
+    public Question getQuestion() {
+        return question;
     }
 
     @Override
     public String toString() {
-        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status, answerService);
+        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status, question);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status, this.answerService);
+        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status, this.question);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class Person {
 
         if(obj instanceof Person) {
             Person objectPerson = (Person) obj;
-            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests()) && this.answerService.equals(objectPerson.getQuestion());
+            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests()) && this.question.equals(objectPerson.getQuestion());
         }
         return false;
     }

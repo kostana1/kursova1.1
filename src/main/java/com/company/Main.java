@@ -1,6 +1,6 @@
 package com.company;
 
-import com.utils.CreatePropertiesFile;
+import com.utils.LoadPropertiesFile;
 import com.person.Person;
 import com.service.CreatePersonService;
 import com.utils.CommonUtils;
@@ -78,7 +78,7 @@ public class Main {
 
         Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
 
-        String personListFilePath = CreatePropertiesFile.getInstance().getProperty(PROPERTY_KEY);
+        String personListFilePath = LoadPropertiesFile.getInstance().getProperty(PROPERTY_KEY);
 
         try (FileWriter fileWriter = new FileWriter(personListFilePath, true);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){

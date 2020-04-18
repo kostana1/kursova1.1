@@ -1,12 +1,12 @@
 package com.service;
 
-import com.utils.CreatePropertiesFile;
+import com.quiz.Question;
+import com.utils.LoadPropertiesFile;
 import com.utils.CommonUtils;
 import com.enumex.EGender;
 import com.enumex.EStatus;
 import com.person.Person;
 import com.quiz.Answer;
-import com.quiz.AnswerService;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -38,6 +38,7 @@ public class CreatePersonService {
     public static final String RESULT = "Your result is %d";
 
     private static PersonService personService = new PersonService();
+    private static QuestionService questionService = new QuestionService();
 // dependency inversion, liskov substitution principle
 //    private IPersonService ipersonService;
 
@@ -188,47 +189,54 @@ public class CreatePersonService {
         }
     }
 
-    public void readPropertyFileAndExecuteReadFileLinesMethod() throws IOException {
-        String testFilePath = CreatePropertiesFile.getInstance().getProperty("testFilePath");
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(testFilePath));
-        readFileLines(bufferedReader);
+    public void readPropertyFileAndExecuteReadFileLinesMethod() {
+        String testFilePath = LoadPropertiesFile.getInstance().getProperty("testFilePath");
 
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(testFilePath))) {
+            readFileLines(bufferedReader);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void readFileLines(BufferedReader bufferedReader) throws IOException {
+    protected void readFileLines(BufferedReader bufferedReader) {
 
         String readPersonData;
         String readAnswerData;
 
-        while ((readPersonData = bufferedReader.readLine()) != null && !readPersonData.isEmpty()) {
-            String[] personData = readPersonData.split(",");
-            UUID uuid = UUID.fromString(personData[0]);
-            String name = personData[1];
-            EGender gender = EGender.valueOf(personData[2]);
-            Date date = CommonUtils.formatDateOfBirth(personData[3]);
-            String interest = personData[4];
-            EStatus status = EStatus.valueOf(personData[5]);
+        try {
+            while ((readPersonData = bufferedReader.readLine()) != null && !readPersonData.isEmpty()) {
+                String[] personData = readPersonData.split(",");
+                UUID uuid = UUID.fromString(personData[0]);
+                String name = personData[1];
+                EGender gender = EGender.valueOf(personData[2]);
+                Date date = CommonUtils.formatDateOfBirth(personData[3]);
+                String interest = personData[4];
+                EStatus status = EStatus.valueOf(personData[5]);
 
-            String questionLine;
-            questionLine = bufferedReader.readLine();
-            AnswerService answerService = new AnswerService(questionLine);
-            Person personFromFile = new Person(uuid, name, gender, date, interest, status, answerService);
-            personService.addNewPerson(personFromFile);
+                String questionLine;
+                questionLine = bufferedReader.readLine();
+                Question question = new Question(questionLine);
+                Person personFromFile = new Person(uuid, name, gender, date, interest, status, question);
+                personService.addNewPerson(personFromFile);
 
-            int counterAnswerLines = 0;
+                int counterAnswerLines = 0;
 
-            while ((readAnswerData = bufferedReader.readLine()) != null && !readAnswerData.isEmpty()) {
-                String[] answerData = readAnswerData.split(",");
-                String answerDescription = answerData[0];
-                int answerPoint = Integer.parseInt(answerData[1]);
-                counterAnswerLines++;
+                while ((readAnswerData = bufferedReader.readLine()) != null && !readAnswerData.isEmpty()) {
+                    String[] answerData = readAnswerData.split(",");
+                    String answerDescription = answerData[0];
+                    int answerPoint = Integer.parseInt(answerData[1]);
+                    counterAnswerLines++;
 
-                answerService.addAnswer(new Answer(answerDescription, answerPoint));
+                    questionService.addAnswer(new Answer(answerDescription, answerPoint));
 
-                if (counterAnswerLines == 4) {
-                    break;
+                    if (counterAnswerLines == 4) {
+                        break;
+                    }
                 }
             }
+        }catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -244,11 +252,12 @@ public class CreatePersonService {
                 System.out.format(ANSWER_NOW_QUESTION, existingPerson.getName());
                 System.out.println(LINE_SEPARATOR);
                 System.out.println(existingPerson.getQuestion());
-                existingPerson.getQuestion().showAnswers();
+                existingPerson.getQuestion().getQuestionServiceInstance().showAnswers();
+
                 System.out.println(LINE_SEPARATOR);
                 String replyInput = getUserInputString();
                 if (!replyInput.isEmpty()) {
-                    System.out.format(RESULT, existingPerson.getQuestion().showPoints(replyInput));
+                    System.out.format(RESULT, existingPerson.getQuestion().getQuestionServiceInstance().showPoints(replyInput));
                 }
             }
         } else {
