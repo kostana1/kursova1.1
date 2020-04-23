@@ -4,20 +4,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class LoadPropertiesFile {
+public class ApplicationPropertyFileExtractor {
 
     private  final String FILENAME = "application.properties";
-    private static final LoadPropertiesFile INSTANCE = new LoadPropertiesFile();
+    private static final ApplicationPropertyFileExtractor INSTANCE = new ApplicationPropertyFileExtractor();
     private Properties properties = new Properties();
 
 
-    public LoadPropertiesFile() {
-        fillPropertiesFromFile(FILENAME);
+    private ApplicationPropertyFileExtractor() {
+        fillPropertiesFromFile(properties);
     }
 
-    protected Properties fillPropertiesFromFile(String fileName) {
+    protected Properties fillPropertiesFromFile(Properties properties) {
 
-        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName)){
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(FILENAME)){
             if(inputStream != null) {
                 properties.load(inputStream);
             }
@@ -31,7 +31,7 @@ public class LoadPropertiesFile {
         return properties.getProperty(key);
     }
 
-    public static LoadPropertiesFile getInstance() {
+    public static ApplicationPropertyFileExtractor getInstance() {
         return INSTANCE;
     }
 }

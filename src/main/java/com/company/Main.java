@@ -1,8 +1,8 @@
 package com.company;
 
-import com.utils.LoadPropertiesFile;
 import com.person.Person;
 import com.service.CreatePersonService;
+import com.utils.ApplicationPropertyFileExtractor;
 import com.utils.CommonUtils;
 import com.service.PersonService;
 
@@ -26,7 +26,7 @@ public class Main {
     private static CreatePersonService createPersonService = new CreatePersonService();
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         boolean quit = false;
         printOptions();
@@ -47,6 +47,7 @@ public class Main {
                     break;
 
                 case 2:
+//                    createPersonWithAllAttributes();
                     createPersonService.readPropertyFileAndExecuteReadFileLinesMethod();
                     break;
 
@@ -78,7 +79,7 @@ public class Main {
 
         Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
 
-        String personListFilePath = LoadPropertiesFile.getInstance().getProperty(PROPERTY_KEY);
+        String personListFilePath = ApplicationPropertyFileExtractor.getInstance().getProperty(PROPERTY_KEY);
 
         try (FileWriter fileWriter = new FileWriter(personListFilePath, true);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){

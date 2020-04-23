@@ -36,7 +36,7 @@ class CreatePersonServiceTest {
         questions.add(new Answer("Peter", 20));
         questions.add(new Answer("Kondio", 30));
         persons = new ArrayList<>();
-        persons.add(new Person(UUID.randomUUID(), "Kondio", FEMALE, new Date(), "bla blah blah", EStatus.IN_RELATIONSHIP, question));
+        persons.add(new Person(UUID.fromString("86f2009e-c00b-4e09-b751-5f5de0c145fc"), "Kondio", FEMALE, new Date(), "bla blah blah", EStatus.IN_RELATIONSHIP, question));
 
     }
 

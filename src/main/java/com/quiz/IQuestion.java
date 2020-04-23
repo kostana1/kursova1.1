@@ -1,8 +1,6 @@
-package com.service;
+package com.quiz;
 
-import com.quiz.Answer;
-
-public interface IQuestionService {
+public interface IQuestion {
 
     Answer findAnswers(String answerDescription);
     boolean addAnswer(Answer answer);

@@ -1,7 +1,7 @@
 package com.service;
 
 import com.quiz.Question;
-import com.utils.LoadPropertiesFile;
+import com.utils.ApplicationPropertyFileExtractor;
 import com.utils.CommonUtils;
 import com.enumex.EGender;
 import com.enumex.EStatus;
@@ -38,7 +38,7 @@ public class CreatePersonService {
     public static final String RESULT = "Your result is %d";
 
     private static PersonService personService = new PersonService();
-    private static QuestionService questionService = new QuestionService();
+    private static Question question = new Question("question");
 // dependency inversion, liskov substitution principle
 //    private IPersonService ipersonService;
 
@@ -190,7 +190,8 @@ public class CreatePersonService {
     }
 
     public void readPropertyFileAndExecuteReadFileLinesMethod() {
-        String testFilePath = LoadPropertiesFile.getInstance().getProperty("testFilePath");
+        String testFilePath = ApplicationPropertyFileExtractor.getInstance().getProperty("testFilePath");
+
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(testFilePath))) {
             readFileLines(bufferedReader);
@@ -208,17 +209,19 @@ public class CreatePersonService {
             while ((readPersonData = bufferedReader.readLine()) != null && !readPersonData.isEmpty()) {
                 String[] personData = readPersonData.split(",");
                 UUID uuid = UUID.fromString(personData[0]);
-                String name = personData[1];
-                EGender gender = EGender.valueOf(personData[2]);
-                Date date = CommonUtils.formatDateOfBirth(personData[3]);
-                String interest = personData[4];
-                EStatus status = EStatus.valueOf(personData[5]);
+                if(uuid.toString().matches(UUID_PATTERN)) {
+                    String name = personData[1];
+                    EGender gender = EGender.valueOf(personData[2]);
+                    Date date = CommonUtils.formatDateOfBirth(personData[3]);
+                    String interest = personData[4];
+                    EStatus status = EStatus.valueOf(personData[5]);
 
-                String questionLine;
-                questionLine = bufferedReader.readLine();
-                Question question = new Question(questionLine);
-                Person personFromFile = new Person(uuid, name, gender, date, interest, status, question);
-                personService.addNewPerson(personFromFile);
+                    String questionLine;
+                    questionLine = bufferedReader.readLine();
+                    Question question = new Question(questionLine);
+                    Person personFromFile = new Person(uuid, name, gender, date, interest, status, question);
+                    personService.addNewPerson(personFromFile);
+                }
 
                 int counterAnswerLines = 0;
 
@@ -228,7 +231,7 @@ public class CreatePersonService {
                     int answerPoint = Integer.parseInt(answerData[1]);
                     counterAnswerLines++;
 
-                    questionService.addAnswer(new Answer(answerDescription, answerPoint));
+                    question.addAnswer(new Answer(answerDescription, answerPoint));
 
                     if (counterAnswerLines == 4) {
                         break;
@@ -252,12 +255,12 @@ public class CreatePersonService {
                 System.out.format(ANSWER_NOW_QUESTION, existingPerson.getName());
                 System.out.println(LINE_SEPARATOR);
                 System.out.println(existingPerson.getQuestion());
-                existingPerson.getQuestion().getQuestionServiceInstance().showAnswers();
+                existingPerson.getQuestion().showAnswers();
 
                 System.out.println(LINE_SEPARATOR);
                 String replyInput = getUserInputString();
                 if (!replyInput.isEmpty()) {
-                    System.out.format(RESULT, existingPerson.getQuestion().getQuestionServiceInstance().showPoints(replyInput));
+                    System.out.format(RESULT, existingPerson.getQuestion().showPoints(replyInput));
                 }
             }
         } else {
