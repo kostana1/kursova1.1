@@ -8,6 +8,8 @@ public class Question implements IQuestion{
     private String questionDescription;
     protected List<Answer> questionAnswers;
 
+    public Question() {
+    }
 
     public Question(String questionDescription) {
         this.questionDescription = questionDescription;

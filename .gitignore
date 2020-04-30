@@ -2,6 +2,18 @@
 ## Java
 ##############################
 .mtj.tmp/*
+=======
+.DS_Store
+mvnw
+*.cmd
+HELP.md
+
+mp1.iml
+.DS_Store
+.classpath
+.project
+.settings/
+# Compiled class file
 *.class
 *.jar
 *.war

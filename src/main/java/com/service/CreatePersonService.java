@@ -14,9 +14,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.UUID;
+import java.lang.reflect.Type;
+import java.util.*;
 
 public class CreatePersonService {
 
@@ -262,7 +261,42 @@ public class CreatePersonService {
         }
     }
 
-    public void askPersonQuestionFromJSonFile() {
+    public void askPersonQuestionFromJsonFile() {
+        String jsonFilePath = ApplicationPropertyFileExtractor.getInstance().getProperty("jsonFilePath");
+
+        try {
+
+            List<Person> personList = Arrays.asList(mapper.readValue(new File(jsonFilePath), Person[].class));
+
+            System.out.println(VALID_UUID);
+            String uuidInput = getUserInputString();
+            if (uuidInput.matches(UUID_PATTERN)) {
+                
+                Person jsonPerson = personList.stream().
+                        filter(person -> person.getUuid().equals(UUID.fromString(uuidInput))).
+                        findFirst().orElse(null);
+
+                if (jsonPerson != null) {
+                    System.out.format(PERSON_UUID_BELONGS_TO, jsonPerson.getName());
+                    System.out.format(ANSWER_NOW_QUESTION, jsonPerson.getName());
+                    System.out.println(LINE_SEPARATOR);
+                    System.out.println(jsonPerson.getQuestion());
+                    jsonPerson.getQuestion().showAnswers();
+
+                    System.out.println(LINE_SEPARATOR);
+                    String replyInput = getUserInputString();
+                    if (!replyInput.isEmpty()) {
+                        System.out.format(RESULT, jsonPerson.getQuestion().showPoints(replyInput));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void askPersonQuestionFromJSonFileWithJSonNode() {
 
         String jsonFilePath = ApplicationPropertyFileExtractor.getInstance().getProperty("jsonFilePath");
         try {
