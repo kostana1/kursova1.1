@@ -64,6 +64,6 @@ public class Question implements IQuestion{
 
     @Override
     public String toString() {
-        return this.getQuestionDescription();
+        return this.questionDescription;
     }
 }

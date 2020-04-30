@@ -1,0 +1,47 @@
+[ {
+  "uuid" : "38c29625-5560-47e5-874b-b7ca3fc394a1",
+  "name" : "Reni",
+  "dateOfBirth" : 976831200000,
+  "interests" : "dsffdgf",
+  "gender" : "FEMALE",
+  "status" : "IN_RELATIONSHIP",
+  "question" : {
+    "questionDescription" : "How much do you drink?",
+    "questionAnswers" : [ {
+      "answerDescription" : "A lot",
+      "points" : 50
+    }, {
+      "answerDescription" : "Sometimes",
+      "points" : 30
+    }, {
+      "answerDescription" : "Every once in a while",
+      "points" : 20
+    }, {
+      "answerDescription" : "Never",
+      "points" : 0
+    } ]
+  }
+}, {
+  "uuid" : "86f2009e-c00b-4e09-b751-5f5de0c145fc",
+  "name" : "Docho",
+  "dateOfBirth" : 968446800000,
+  "interests" : "dffdsgfd",
+  "gender" : "MALE",
+  "status" : "IN_RELATIONSHIP",
+  "question" : {
+    "questionDescription" : "How much do you smoke?",
+    "questionAnswers" : [ {
+      "answerDescription" : "2 packs a day",
+      "points" : 50
+    }, {
+      "answerDescription" : "1 cigarette a day",
+      "points" : 30
+    }, {
+      "answerDescription" : "5 cigarettes a day",
+      "points" : 20
+    }, {
+      "answerDescription" : "Never",
+      "points" : 0
+    } ]
+  }
+} ]

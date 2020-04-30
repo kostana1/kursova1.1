@@ -2,17 +2,18 @@ package com.person;
 
 import com.enumex.EGender;
 import com.enumex.EStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quiz.Question;
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
+@JsonIgnoreProperties()
 public class Person {
 
     public static final String TO_STRING = "%s,%s,%s,%s,%s,%s,%s";
-    private static final String UUID_PATTERN = "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$";
-
 
     private UUID uuid;
     private String name;
