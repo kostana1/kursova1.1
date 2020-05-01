@@ -2,6 +2,7 @@ package com.person;
 
 import com.enumex.EGender;
 import com.enumex.EStatus;
+import com.quiz.Question;
 
 import java.util.Date;
 import java.util.Objects;
@@ -9,7 +10,9 @@ import java.util.UUID;
 
 public class Person {
 
-    public static final String TO_STRING = "%s,%s,%s,%s,%s,%s";
+    public static final String TO_STRING = "%s,%s,%s,%s,%s,%s,%s";
+    private static final String UUID_PATTERN = "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$";
+
 
     private UUID uuid;
     private String name;
@@ -17,6 +20,7 @@ public class Person {
     private String interests;
     private EGender gender;
     private EStatus status;
+    private Question question;
 
     public Person(String name, EGender gender, Date dateOfBirth, String interests, EStatus status) {
         this.uuid = UUID.randomUUID();
@@ -25,6 +29,16 @@ public class Person {
         this.dateOfBirth = dateOfBirth;
         this.interests = interests;
         this.status = status;
+    }
+
+    public Person(UUID uuid, String name, EGender gender, Date dateOfBirth, String interests, EStatus status, Question question) {
+        this.uuid = uuid;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.interests = interests;
+        this.gender = gender;
+        this.status = status;
+        this.question = question;
     }
 
     public String getName() {
@@ -51,25 +65,29 @@ public class Person {
         return uuid;
     }
 
+    public Question getQuestion() {
+        return question;
+    }
+
     @Override
     public String toString() {
-        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status);
+        return String.format(TO_STRING, uuid, name, gender, dateOfBirth, interests, status, question);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status);
+        return Objects.hash(this.name, this.dateOfBirth, this.gender, this.interests, this.status, this.question);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj) {
+        if (this == obj) {
             return true;
         }
 
-        if(obj instanceof Person) {
+        if (obj instanceof Person) {
             Person objectPerson = (Person) obj;
-            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests());
+            return this.name.equals(objectPerson.getName()) && this.gender == objectPerson.getGender() && this.dateOfBirth == objectPerson.getDateOfBirth() && this.status == objectPerson.getStatus() && this.interests.equals(objectPerson.getInterests()) && this.question.equals(objectPerson.getQuestion());
         }
         return false;
     }

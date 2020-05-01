@@ -1,10 +1,12 @@
 package com.service;
 
 import com.person.Person;
+import com.utils.ApplicationPropertyFileExtractor;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 public class PersonService implements IPersonService {
 
@@ -15,17 +17,35 @@ public class PersonService implements IPersonService {
     private static final String PERSON_DELETED = "Person deleted";
     private static final String PERSON_LIST = "Person list";
 
-    private static final PersonService personService = new PersonService();
-
     protected List<Person> allPersons;
 
     public PersonService() {
         this.allPersons = new ArrayList<>();
     }
 
-    protected static boolean isPersonCreated(Person person) {
-        for (int i = 0; i < personService.allPersons.size(); i++) {
-            Person existedPerson = personService.allPersons.get(i);
+    @Override
+    public List<Person> getAllPersons() {
+        return Collections.unmodifiableList(allPersons);
+    }
+
+    @Override
+    public void showPersonsFromInternet() {
+        List<Person> personsFromInternet = readFromPersonsFromInternet();
+
+        // print persons
+
+        personsFromInternet.forEach(p -> System.out.println(p));
+    }
+
+    @Override
+    public List<Person> readFromPersonsFromInternet() {
+        // calls some link in the internet and reads persons from there
+        return null;
+    }
+
+    protected boolean isPersonCreated(Person person) {
+        for (int i = 0; i < allPersons.size(); i++) {
+            Person existedPerson = allPersons.get(i);
             if (existedPerson.equals(person)) {
                 System.out.println(PERSON_EXIST);
                 return true;
@@ -87,10 +107,37 @@ public class PersonService implements IPersonService {
     }
 
     @Override
+    public Person findPersonByUUID(UUID uuid) {
+        for(int i=0; i < this.allPersons.size(); i++) {
+            Person existedPerson = this.allPersons.get(i);
+            if(existedPerson != null) {
+                if(existedPerson.getUuid().equals(uuid)) {
+                    return existedPerson;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void showPersons() {
         System.out.println(PERSON_LIST);
         for (Person person : allPersons) {
             System.out.println(person.toString());
+        }
+    }
+
+    @Override
+    public void showPersonsFromFile() {
+        String personListFilePath = ApplicationPropertyFileExtractor.getInstance().getProperty("personListFilePath");
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(personListFilePath))) {
+            String readData;
+            while ((readData = bufferedReader.readLine()) != null && !readData.isEmpty()) {
+                System.out.println(readData);
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

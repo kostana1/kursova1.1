@@ -13,13 +13,13 @@ class PersonServiceTest {
     private PersonService classUnderTest;
 
     @org.junit.jupiter.api.BeforeEach
-    void setup() {
+    public void setup() {
         person = new Person("name", EGender.MALE, new Date(), "sdfdsfdsfds", EStatus.IN_RELATIONSHIP);
         classUnderTest = new PersonService();
     }
 
     @org.junit.jupiter.api.Test
-    void givenPersonWithRealData_whenCreatingPerson_thenAddedInList() {
+    public void givenPersonWithRealData_whenCreatingPerson_thenAddedInList() {
         assertTrue(classUnderTest.addNewPerson(person));
     }
 
@@ -34,7 +34,7 @@ class PersonServiceTest {
     }
 
     @org.junit.jupiter.api.Test
-    void givenPersonWithRealData_whenRemovingPerson_thenExpectToBeRemovedFromList() {
+    public void givenPersonWithRealData_whenRemovingPerson_thenExpectToBeRemovedFromList() {
         classUnderTest.addNewPerson(person);
         assertTrue(classUnderTest.removePerson(person));
         assertFalse(classUnderTest.allPersons.contains(person));
@@ -63,7 +63,7 @@ class PersonServiceTest {
     }
 
     @org.junit.jupiter.api.Test
-    void givenPersonWithRealName_whenFindingByName_thenExpectToBeFound() {
+    public void givenPersonWithRealName_whenFindingByName_thenExpectToBeFound() {
         classUnderTest.addNewPerson(person);
         assertEquals(person, classUnderTest.findPersonByName(person.getName()));
     }
@@ -75,13 +75,13 @@ class PersonServiceTest {
     }
 
     @org.junit.jupiter.api.Test
-    void givenPersonWithRealDateOfBirth_whenFindingByDateOfBirth_thenExpectToBeFound() {
+    public void givenPersonWithRealDateOfBirth_whenFindingByDateOfBirth_thenExpectToBeFound() {
         classUnderTest.addNewPerson(person);
         assertNotNull(classUnderTest.findPersonByDateOfBirth(person.getDateOfBirth()));
         assertSame(person, classUnderTest.findPersonByDateOfBirth(person.getDateOfBirth()));
     }
 
     @org.junit.jupiter.api.Test
-    void showPersons() {
+    public void showPersons() {
     }
 }

@@ -1,4 +1,6 @@
-package com.service;
+package com.utils;
+
+import com.service.CreatePersonService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,4 @@ public class CommonUtils {
         }
         return dateOfBirth;
     }
-
-
 }
