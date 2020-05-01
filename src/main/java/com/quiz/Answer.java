@@ -5,6 +5,9 @@ public class Answer {
     private String answerDescription;
     private int points;
 
+    public Answer() {
+    }
+
     public Answer(String answerDescription, int points) {
         this.answerDescription = answerDescription;
         this.points = points;

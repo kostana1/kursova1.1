@@ -1,5 +1,7 @@
 package com.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quiz.Question;
 import com.utils.ApplicationPropertyFileExtractor;
 import com.utils.CommonUtils;
@@ -9,27 +11,33 @@ import com.person.Person;
 import com.quiz.Answer;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.UUID;
+import java.lang.reflect.Type;
+import java.util.*;
 
 public class CreatePersonService {
 
-    public static final String NAME_INPUT = "Enter your name";
-    public static final String GENDER_INPUT = "Pick a number.***0 for male <-> 1 for female***";
-    public static final String DATE_INPUT = "Enter your date of birth";
-    public static final String INTEREST_INPUT = "Enter your interests *** max symbols = 250 ***";
-    public static final String STATUS_INPUT = "Enter your status *** 0 for single <-> 1 for in relationship <-> 2 for married";
-    public static final String INVALID_INPUT = "Invalid %s input";
-    public static final String SUCCESSFUL_INPUT = "%s successfully added\n";
-    public static final String INTEREST_CHAR_LIMIT = "Your interests have been reduced to 250 characters";
-    public static final String NAME_VALIDATION_REGEX = "[a-zA-z]{3,}";
-    public static final String PATTERN_REGEXP_YEAR = "\\d{4}-[01]\\d-[0-3]\\d";
-    public static final String USE_INTEGERS_ONLY = "Use integers as per description";
+    private static final String NAME_INPUT = "Enter your name";
+    private static final String GENDER_INPUT = "Pick a number.***0 for male <-> 1 for female***";
+    private static final String DATE_INPUT = "Enter your date of birth";
+    private static final String INTEREST_INPUT = "Enter your interests *** max symbols = 250 ***";
+    private static final String STATUS_INPUT = "Enter your status *** 0 for single <-> 1 for in relationship <-> 2 for married";
+    private static final String INVALID_INPUT = "Invalid %s input";
+    private static final String SUCCESSFUL_INPUT = "%s successfully added\n";
+    private static final String INTEREST_CHAR_LIMIT = "Your interests have been reduced to 250 characters";
+    private static final String NAME_VALIDATION_REGEX = "[a-zA-z]{3,}";
+    private static final String PATTERN_REGEXP_YEAR = "\\d{4}-[01]\\d-[0-3]\\d";
+    private static final String USE_INTEGERS_ONLY = "Use integers as per description";
 
     private static final String VALID_UUID = "Enter a valid uuid";
+    private static final String PERSON_UUID = "uuid";
+    private static final String PERSON_NAME = "name";
+    private static final String PERSON_QUESTION = "question";
+    private static final String QUESTION_ANSWERS = "questionAnswers";
+    private static final String ANSWER_DESCRIPTION = "answerDescription";
+    private static final String QUESTION_DESCRIPTION = "questionDescription";
     private static final String UUID_PATTERN = "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$";
     private static final String INVALID_UUID = "You have entered wrong or invalid uuid";
     private static final String PERSON_UUID_BELONGS_TO = "This uuid belongs to %s\n";
@@ -38,7 +46,7 @@ public class CreatePersonService {
     public static final String RESULT = "Your result is %d";
 
     private static PersonService personService = new PersonService();
-    private static Question question = new Question("question");
+    private static final ObjectMapper mapper = new ObjectMapper();
 // dependency inversion, liskov substitution principle
 //    private IPersonService ipersonService;
 
@@ -190,12 +198,18 @@ public class CreatePersonService {
     }
 
     public void readPropertyFileAndExecuteReadFileLinesMethod() {
+
         String testFilePath = ApplicationPropertyFileExtractor.getInstance().getProperty("testFilePath");
-
-
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(testFilePath))) {
             readFileLines(bufferedReader);
-        }catch (IOException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String jsonFilePath = ApplicationPropertyFileExtractor.getInstance().getProperty("jsonFilePath");
+        try {
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(jsonFilePath), personService.allPersons);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -205,11 +219,14 @@ public class CreatePersonService {
         String readPersonData;
         String readAnswerData;
 
+        Person personFromFile;
+        Answer existingAnswers;
+
         try {
             while ((readPersonData = bufferedReader.readLine()) != null && !readPersonData.isEmpty()) {
                 String[] personData = readPersonData.split(",");
                 UUID uuid = UUID.fromString(personData[0]);
-                if(uuid.toString().matches(UUID_PATTERN)) {
+                if (uuid.toString().matches(UUID_PATTERN)) {
                     String name = personData[1];
                     EGender gender = EGender.valueOf(personData[2]);
                     Date date = CommonUtils.formatDateOfBirth(personData[3]);
@@ -219,26 +236,109 @@ public class CreatePersonService {
                     String questionLine;
                     questionLine = bufferedReader.readLine();
                     Question question = new Question(questionLine);
-                    Person personFromFile = new Person(uuid, name, gender, date, interest, status, question);
+                    personFromFile = new Person(uuid, name, gender, date, interest, status, question);
                     personService.addNewPerson(personFromFile);
-                }
 
-                int counterAnswerLines = 0;
+                    int counterAnswerLines = 0;
 
-                while ((readAnswerData = bufferedReader.readLine()) != null && !readAnswerData.isEmpty()) {
-                    String[] answerData = readAnswerData.split(",");
-                    String answerDescription = answerData[0];
-                    int answerPoint = Integer.parseInt(answerData[1]);
-                    counterAnswerLines++;
+                    while ((readAnswerData = bufferedReader.readLine()) != null && !readAnswerData.isEmpty()) {
+                        String[] answerData = readAnswerData.split(",");
+                        String answerDescription = answerData[0];
+                        int answerPoint = Integer.parseInt(answerData[1]);
+                        counterAnswerLines++;
 
-                    question.addAnswer(new Answer(answerDescription, answerPoint));
+                        existingAnswers = new Answer(answerDescription, answerPoint);
+                        question.addAnswer(existingAnswers);
 
-                    if (counterAnswerLines == 4) {
-                        break;
+                        if (counterAnswerLines == 4) {
+                            break;
+                        }
                     }
                 }
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void askPersonQuestionFromJsonFile() {
+        String jsonFilePath = ApplicationPropertyFileExtractor.getInstance().getProperty("jsonFilePath");
+
+        try {
+
+            List<Person> personList = Arrays.asList(mapper.readValue(new File(jsonFilePath), Person[].class));
+
+            System.out.println(VALID_UUID);
+            String uuidInput = getUserInputString();
+            if (uuidInput.matches(UUID_PATTERN)) {
+                
+                Person jsonPerson = personList.stream().
+                        filter(person -> person.getUuid().equals(UUID.fromString(uuidInput))).
+                        findFirst().orElse(null);
+
+                if (jsonPerson != null) {
+                    System.out.format(PERSON_UUID_BELONGS_TO, jsonPerson.getName());
+                    System.out.format(ANSWER_NOW_QUESTION, jsonPerson.getName());
+                    System.out.println(LINE_SEPARATOR);
+                    System.out.println(jsonPerson.getQuestion());
+                    jsonPerson.getQuestion().showAnswers();
+
+                    System.out.println(LINE_SEPARATOR);
+                    String replyInput = getUserInputString();
+                    if (!replyInput.isEmpty()) {
+                        System.out.format(RESULT, jsonPerson.getQuestion().showPoints(replyInput));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void askPersonQuestionFromJSonFileWithJSonNode() {
+
+        String jsonFilePath = ApplicationPropertyFileExtractor.getInstance().getProperty("jsonFilePath");
+        try {
+            JsonNode rootPersonArray = mapper.readTree(new File(jsonFilePath));
+
+            System.out.println(VALID_UUID);
+            String uuidUserInput = getUserInputString();
+            for (JsonNode existingPersonNode : rootPersonArray) {
+                String uuidJson = existingPersonNode.path(PERSON_UUID).asText();
+                if (uuidJson.equals(uuidUserInput)) {
+                    String nameJson = existingPersonNode.path(PERSON_NAME).asText();
+                    System.out.format(PERSON_UUID_BELONGS_TO, nameJson);
+                    System.out.format(ANSWER_NOW_QUESTION, nameJson);
+                    System.out.println(LINE_SEPARATOR);
+
+                    JsonNode questionNode = existingPersonNode.path(PERSON_QUESTION);
+                    if (!questionNode.isMissingNode()) {
+                        String questionDescription = questionNode.path(QUESTION_DESCRIPTION).asText();
+                        System.out.println(questionDescription);
+
+                        JsonNode answersArrayNode = questionNode.get(QUESTION_ANSWERS);
+                        if (answersArrayNode.isArray()) {
+
+                            String answerDescription = null;
+                            int points = 0;
+
+                            for (JsonNode answer : answersArrayNode) {
+                                answerDescription = answer.path(ANSWER_DESCRIPTION).asText();
+                                System.out.println(answerDescription);
+                            }
+
+                            String replyInput = getUserInputString();
+                            if (replyInput.equals(answerDescription)) {
+
+                                // reading points logic to be created
+
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

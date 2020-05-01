@@ -11,8 +11,6 @@ import java.util.UUID;
 public class Person {
 
     public static final String TO_STRING = "%s,%s,%s,%s,%s,%s,%s";
-    private static final String UUID_PATTERN = "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$";
-
 
     private UUID uuid;
     private String name;
@@ -21,6 +19,9 @@ public class Person {
     private EGender gender;
     private EStatus status;
     private Question question;
+
+    public Person() {
+    }
 
     public Person(String name, EGender gender, Date dateOfBirth, String interests, EStatus status) {
         this.uuid = UUID.randomUUID();

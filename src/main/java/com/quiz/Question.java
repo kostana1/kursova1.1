@@ -8,6 +8,8 @@ public class Question implements IQuestion{
     private String questionDescription;
     protected List<Answer> questionAnswers;
 
+    public Question() {
+    }
 
     public Question(String questionDescription) {
         this.questionDescription = questionDescription;
@@ -64,6 +66,6 @@ public class Question implements IQuestion{
 
     @Override
     public String toString() {
-        return this.getQuestionDescription();
+        return this.questionDescription;
     }
 }

@@ -60,7 +60,7 @@ public class Main {
                     break;
 
                 case 5:
-                    createPersonService.askPersonQuestionFromFile();
+                    createPersonService.askPersonQuestionFromJSonFile();
                     break;
 
                 case 6:
@@ -77,7 +77,11 @@ public class Main {
 
     public static void createPersonWithAllAttributesToFile() {
 
-        Person newPerson = new Person(createPersonService.createPersonName(), createPersonService.createPersonGender(), createPersonService.createPersonDateOfBirth(), createPersonService.createPersonInterests(), createPersonService.createPersonStatus());
+        Person newPerson = new Person(createPersonService.createPersonName(),
+                createPersonService.createPersonGender(),
+                createPersonService.createPersonDateOfBirth(),
+                createPersonService.createPersonInterests(),
+                createPersonService.createPersonStatus());
 
         String personListFilePath = ApplicationPropertyFileExtractor.getInstance().getProperty(PROPERTY_KEY);
 
